@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.hr.approval.mapper.ApprovalProcessMapper">
+
+    <resultMap type="com.zhy.hr.approval.domain.ApprovalProcess" id="ApprovalProcessResult">
+        <result property="approvalId"    column="approval_id"    />
+        <result property="approvalType"    column="approval_type"    />
+        <result property="approvalUserId"    column="approval_user_id"    />
+        <result property="approvalRemark"    column="approval_remark"    />
+        <result property="applyUserId"    column="apply_user_id"    />
+        <result property="aprrovalState"    column="aprroval_state"    />
+        <result property="reasonFailure"    column="reason_failure"    />
+        <result property="passTime"    column="pass_time"    />
+        <result property="creatTime"    column="creat_time"    />
+
+        <association property="applyUser" columnPrefix="apply_"
+                     resultMap="com.zhy.system.mapper.SysUserMapper.SysUserResult"/>
+
+        <association property="approvalUser" javaType="com.zhy.common.core.domain.entity.SysUser" columnPrefix="approval_"
+                     resultMap="com.zhy.system.mapper.SysUserMapper.SysUserResult"/>
+    </resultMap>
+
+    <sql id="selectApprovalProcessVo">
+        select ap.approval_id,
+               ap.approval_type,
+               ap.approval_user_id,
+               ap.approval_remark,
+               ap.apply_user_id,
+               ap.aprroval_state,
+               ap.reason_failure,
+               ap.pass_time,
+               ap.creat_time,
+
+               apply.nick_name apply_nick_name,
+
+               approval.nick_name approval_nick_name
+
+        from approval_process ap
+        left join sys_user approval on ap.approval_user_id = approval.user_id
+        left join sys_user apply on ap.apply_user_id = apply.user_id
+    </sql>
+
+    <select id="selectApprovalProcessList" resultMap="ApprovalProcessResult">
+        <include refid="selectApprovalProcessVo"/>
+        <where>
+            <if test="approvalId != null  and approvalId != ''"> and approval_id = #{approvalId}</if>
+            <if test="approvalType != null  and approvalType != ''"> and approval_type = #{approvalType}</if>
+            <if test="approvalUserId != null  and approvalUserId != ''"> and approval_user_id = #{approvalUserId}</if>
+            <if test="applyUserId != null "> and apply_user_id = #{applyUserId}</if>
+            <if test="aprrovalState != null  and aprrovalState != ''"> and aprroval_state = #{aprrovalState}</if>
+        </where>
+    </select>
+
+    <select id="selectApprovalProcessByApprovalId" parameterType="String" resultMap="ApprovalProcessResult">
+        <include refid="selectApprovalProcessVo"/>
+        where approval_id = #{approvalId}
+    </select>
+
+    <insert id="insertApprovalProcess" parameterType="ApprovalProcess">
+        insert into approval_process
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="approvalId != null">approval_id,</if>
+            <if test="approvalType != null">approval_type,</if>
+            <if test="approvalUserId != null">approval_user_id,</if>
+            <if test="approvalRemark != null">approval_remark,</if>
+            <if test="applyUserId != null">apply_user_id,</if>
+            <if test="aprrovalState != null">aprroval_state,</if>
+            <if test="reasonFailure != null">reason_failure,</if>
+            <if test="passTime != null">pass_time,</if>
+            <if test="creatTime != null">creat_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="approvalId != null">#{approvalId},</if>
+            <if test="approvalType != null">#{approvalType},</if>
+            <if test="approvalUserId != null">#{approvalUserId},</if>
+            <if test="approvalRemark != null">#{approvalRemark},</if>
+            <if test="applyUserId != null">#{applyUserId},</if>
+            <if test="aprrovalState != null">#{aprrovalState},</if>
+            <if test="reasonFailure != null">#{reasonFailure},</if>
+            <if test="passTime != null">#{passTime},</if>
+            <if test="creatTime != null">#{creatTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApprovalProcess" parameterType="ApprovalProcess">
+        update approval_process
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="approvalType != null">approval_type = #{approvalType},</if>
+            <if test="approvalUserId != null">approval_user_id = #{approvalUserId},</if>
+            <if test="approvalRemark != null">approval_remark = #{approvalRemark},</if>
+            <if test="applyUserId != null">apply_user_id = #{applyUserId},</if>
+            <if test="aprrovalState != null">aprroval_state = #{aprrovalState},</if>
+            <if test="reasonFailure != null">reason_failure = #{reasonFailure},</if>
+            <if test="passTime != null">pass_time = #{passTime},</if>
+            <if test="creatTime != null">creat_time = #{creatTime},</if>
+        </trim>
+        where approval_id = #{approvalId}
+    </update>
+
+    <delete id="deleteApprovalProcessByApprovalId" parameterType="String">
+        delete from approval_process where approval_id = #{approvalId}
+    </delete>
+
+    <delete id="deleteApprovalProcessByApprovalIds" parameterType="String">
+        delete from approval_process where approval_id in
+        <foreach item="approvalId" collection="array" open="(" separator="," close=")">
+            #{approvalId}
+        </foreach>
+    </delete>
+</mapper>
