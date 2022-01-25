@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,10 +85,10 @@ public class ApprovalProcessServiceImpl implements IApprovalProcessService {
         Long userId = sysDeptMapper.selectDeptById(SecurityUtils.getDeptId()).getUserId();
 
         // 初始化审批数据
-        approvalProcess.setApprovalId(UUID.randomUUID().toString());
         approvalProcess.setApplyUserId(SecurityUtils.getUserId());
         approvalProcess.setApprovalUserId(ObjectUtils.isEmpty(userId) ? 1L : userId);
         approvalProcess.setAprrovalState(AprrovalState.underway.getValue());
+        approvalProcess.setCreatTime(new Date());
         return approvalProcessMapper.insertApprovalProcess(approvalProcess);
     }
 
@@ -99,6 +100,11 @@ public class ApprovalProcessServiceImpl implements IApprovalProcessService {
      */
     @Override
     public int updateApprovalProcess(ApprovalProcess approvalProcess) {
+        // 设置通过时间
+        if (approvalProcess.getAprrovalState().equals(AprrovalState.successful.getValue())) {
+            approvalProcess.setPassTime(new Date());
+        }
+
         return approvalProcessMapper.updateApprovalProcess(approvalProcess);
     }
 

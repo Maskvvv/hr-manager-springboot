@@ -22,7 +22,7 @@ public class ApprovalProcess extends BaseEntity {
     /**
      * $column.columnComment
      */
-    private String approvalId;
+    private Long approvalId;
 
     /**
      * 审批类型

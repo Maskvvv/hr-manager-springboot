@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.hr.userinfo.mapper.NationMapper">
+
+    <resultMap type="com.zhy.hr.userinfo.domain.Nation" id="NationResult">
+        <result property="nationId"    column="nation_id"    />
+        <result property="nationName"    column="nation_name"    />
+        <result property="userCount"    column="user_count"    />
+    </resultMap>
+
+    <sql id="selectNationVo">
+        select na.nation_id, na.nation_name, (select count(*) from user_info ui where ui.nation_id = na.nation_id) AS user_count
+        from nation na
+    </sql>
+
+    <select id="selectNationList" resultMap="NationResult">
+        <include refid="selectNationVo"/>
+        <where>
+            <if test="nationId != null "> and na.nation_id = #{nationId}</if>
+            <if test="nationName != null  and nationName != ''"> and na.nation_name like concat('%', #{nationName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectNationByNationId" parameterType="Long" resultMap="NationResult">
+        <include refid="selectNationVo"/>
+        where na.nation_id = #{nationId}
+    </select>
+
+    <insert id="insertNation" useGeneratedKeys="true" keyProperty="nationId">
+        insert into nation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nationName != null and nationName != ''">nation_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nationName != null and nationName != ''">#{nationName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNation">
+        update nation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nationName != null and nationName != ''">nation_name = #{nationName},</if>
+        </trim>
+        where nation_id = #{nationId}
+    </update>
+
+    <delete id="deleteNationByNationId" parameterType="Long">
+        delete from nation where nation_id = #{nationId}
+    </delete>
+
+    <delete id="deleteNationByNationIds" parameterType="String">
+        delete from nation where nation_id in
+        <foreach item="nationId" collection="array" open="(" separator="," close=")">
+            #{nationId}
+        </foreach>
+    </delete>
+</mapper>
