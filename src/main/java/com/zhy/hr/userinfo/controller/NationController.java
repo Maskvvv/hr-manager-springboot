@@ -1,6 +1,7 @@
 package com.zhy.hr.userinfo.controller;
 
 import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +29,7 @@ import com.zhy.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/userinfo/nation")
-public class NationController extends BaseController
-{
+public class NationController extends BaseController {
     @Autowired
     private INationService nationService;
 
@@ -38,8 +38,7 @@ public class NationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('userinfo:nation:list')")
     @GetMapping("/list")
-    public TableDataInfo list(Nation nation)
-    {
+    public TableDataInfo list(Nation nation) {
         startPage();
         List<Nation> list = nationService.selectNationList(nation);
         return getDataTable(list);
@@ -51,8 +50,7 @@ public class NationController extends BaseController
     @PreAuthorize("@ss.hasPermi('userinfo:nation:export')")
     @Log(title = "民族", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(Nation nation)
-    {
+    public AjaxResult export(Nation nation) {
         List<Nation> list = nationService.selectNationList(nation);
         ExcelUtil<Nation> util = new ExcelUtil<Nation>(Nation.class);
         return util.exportExcel(list, "民族数据");
@@ -63,8 +61,7 @@ public class NationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('userinfo:nation:query')")
     @GetMapping(value = "/{nationId}")
-    public AjaxResult getInfo(@PathVariable("nationId") Long nationId)
-    {
+    public AjaxResult getInfo(@PathVariable("nationId") Long nationId) {
         return AjaxResult.success(nationService.selectNationByNationId(nationId));
     }
 
@@ -74,8 +71,7 @@ public class NationController extends BaseController
     @PreAuthorize("@ss.hasPermi('userinfo:nation:add')")
     @Log(title = "民族", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Nation nation)
-    {
+    public AjaxResult add(@RequestBody Nation nation) {
         return toAjax(nationService.insertNation(nation));
     }
 
@@ -85,8 +81,7 @@ public class NationController extends BaseController
     @PreAuthorize("@ss.hasPermi('userinfo:nation:edit')")
     @Log(title = "民族", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Nation nation)
-    {
+    public AjaxResult edit(@RequestBody Nation nation) {
         return toAjax(nationService.updateNation(nation));
     }
 
@@ -95,9 +90,8 @@ public class NationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('userinfo:nation:remove')")
     @Log(title = "民族", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{nationIds}")
-    public AjaxResult remove(@PathVariable Long[] nationIds)
-    {
+    @DeleteMapping("/{nationIds}")
+    public AjaxResult remove(@PathVariable Long[] nationIds) {
         return toAjax(nationService.deleteNationByNationIds(nationIds));
     }
 }
