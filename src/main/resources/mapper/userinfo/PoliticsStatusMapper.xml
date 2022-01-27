@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.hr.userinfo.mapper.PoliticsStatusMapper">
+    <resultMap type="com.zhy.hr.userinfo.domain.PoliticsStatus" id="PoliticsStatusResult">
+        <result property="politicsId" column="politics_id"/>
+        <result property="politicsName" column="politics_name"/>
+        <result property="userCount" column="user_count"/>
+    </resultMap>
+
+    <sql id="selectPoliticsStatusVo">
+        select ps.politics_id, ps.politics_name, (select count(*) from user_info ui where ui.politics_id = ps.politics_id) AS user_count
+        from politics_status ps
+    </sql>
+
+    <select id="selectPoliticsStatusList" resultMap="PoliticsStatusResult">
+        <include refid="selectPoliticsStatusVo"/>
+        <where>
+            <if test="politicsId != null "> and ps.politics_id = #{politicsId}</if>
+            <if test="politicsName != null  and politicsName != ''"> and ps.politics_name like concat('%', #{politicsName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectPoliticsStatusByPoliticsId" parameterType="Long" resultMap="PoliticsStatusResult">
+        <include refid="selectPoliticsStatusVo"/>
+        where ps.politics_id = #{politicsId}
+    </select>
+
+    <insert id="insertPoliticsStatus" useGeneratedKeys="true" keyProperty="politicsId">
+        insert into politics_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="politicsName != null">politics_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="politicsName != null">#{politicsName},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePoliticsStatus">
+        update politics_status
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="politicsName != null">politics_name = #{politicsName},</if>
+        </trim>
+        where politics_id = #{politicsId}
+    </update>
+
+    <delete id="deletePoliticsStatusByPoliticsId" parameterType="Long">
+        delete from politics_status where politics_id = #{politicsId}
+    </delete>
+
+    <delete id="deletePoliticsStatusByPoliticsIds" parameterType="String">
+        delete from politics_status where politics_id in
+        <foreach item="politicsId" collection="array" open="(" separator="," close=")">
+            #{politicsId}
+        </foreach>
+    </delete>
+</mapper>
