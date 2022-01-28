@@ -44,6 +44,11 @@ public class NationController extends BaseController {
         return getDataTable(list);
     }
 
+    @GetMapping("/listAll")
+    public List<Nation> listAll(Nation nation) {
+        return nationService.selectNationList(nation);
+    }
+
     /**
      * 导出民族列表
      */

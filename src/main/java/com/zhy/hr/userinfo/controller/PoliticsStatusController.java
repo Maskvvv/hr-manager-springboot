@@ -2,6 +2,7 @@ package com.zhy.hr.userinfo.controller;
 
 import java.util.List;
 
+import com.zhy.hr.userinfo.domain.Nation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,11 @@ public class PoliticsStatusController extends BaseController {
         startPage();
         List<PoliticsStatus> list = politicsStatusService.selectPoliticsStatusList(politicsStatus);
         return getDataTable(list);
+    }
+
+    @GetMapping("/listAll")
+    public List<PoliticsStatus> listAll(PoliticsStatus politicsStatus) {
+        return politicsStatusService.selectPoliticsStatusList(politicsStatus);
     }
 
     /**

@@ -1,47 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhy.hr.userinfo.mapper.SalaryMapper">
-
     <resultMap type="com.zhy.hr.userinfo.domain.Salary" id="SalaryResult">
-        <result property="salaryId"    column="salary_id"    />
-        <result property="salaryName"    column="salary_name"    />
-        <result property="basicSalary"    column="basic_salary"    />
-        <result property="bonus"    column="bonus"    />
-        <result property="lunchSalary"    column="lunch_salary"    />
-        <result property="trafficSalary"    column="traffic_salary"    />
-        <result property="allSalary"    column="all_salary"    />
-        <result property="pensionBase"    column="pension_base"    />
-        <result property="pensionPer"    column="pension_per"    />
-        <result property="createDate"    column="create_date"    />
-        <result property="medicalBase"    column="medical_base"    />
-        <result property="medicalPer"    column="medical_per"    />
-        <result property="accumulationFundBase"    column="accumulation_fund_base"    />
-        <result property="accumulationFundPer"    column="accumulation_fund_per"    />
+        <result property="salaryId" column="salary_id"/>
+        <result property="salaryName" column="salary_name"/>
+        <result property="basicSalary" column="basic_salary"/>
+        <result property="bonus" column="bonus"/>
+        <result property="lunchSalary" column="lunch_salary"/>
+        <result property="trafficSalary" column="traffic_salary"/>
+        <result property="allSalary" column="all_salary"/>
+        <result property="pensionBase" column="pension_base"/>
+        <result property="pensionPer" column="pension_per"/>
+        <result property="createDate" column="create_date"/>
+        <result property="medicalBase" column="medical_base"/>
+        <result property="medicalPer" column="medical_per"/>
+        <result property="accumulationFundBase" column="accumulation_fund_base"/>
+        <result property="accumulationFundPer" column="accumulation_fund_per"/>
     </resultMap>
 
     <sql id="selectSalaryVo">
-        select salary_id, salary_name, basic_salary, bonus, lunch_salary, traffic_salary, all_salary, pension_base, pension_per, create_date, medical_base, medical_per, accumulation_fund_base, accumulation_fund_per from salary
+        select salary_id,
+               salary_name,
+               basic_salary,
+               bonus,
+               lunch_salary,
+               traffic_salary,
+               all_salary,
+               pension_base,
+               pension_per,
+               create_date,
+               medical_base,
+               medical_per,
+               accumulation_fund_base,
+               accumulation_fund_per
+        from salary
     </sql>
 
     <select id="selectSalaryList" resultMap="SalaryResult">
         <include refid="selectSalaryVo"/>
         <where>
-            <if test="salaryId != null "> and salary_id = #{salaryId}</if>
-            <if test="salaryName != null  and salaryName != ''"> and salary_name like concat('%', #{salaryName}, '%')</if>
-            <if test="basicSalary != null "> and basic_salary = #{basicSalary}</if>
-            <if test="bonus != null "> and bonus = #{bonus}</if>
-            <if test="lunchSalary != null "> and lunch_salary = #{lunchSalary}</if>
-            <if test="trafficSalary != null "> and traffic_salary = #{trafficSalary}</if>
-            <if test="allSalary != null "> and all_salary = #{allSalary}</if>
-            <if test="pensionBase != null "> and pension_base = #{pensionBase}</if>
-            <if test="pensionPer != null "> and pension_per = #{pensionPer}</if>
-            <if test="createDate != null "> and create_date = #{createDate}</if>
-            <if test="medicalBase != null "> and medical_base = #{medicalBase}</if>
-            <if test="medicalPer != null "> and medical_per = #{medicalPer}</if>
-            <if test="accumulationFundBase != null "> and accumulation_fund_base = #{accumulationFundBase}</if>
-            <if test="accumulationFundPer != null "> and accumulation_fund_per = #{accumulationFundPer}</if>
+            <if test="salaryId != null">
+                and salary_id = #{salaryId}
+            </if>
+            <if test="salaryName != null  and salaryName != ''">
+                and salary_name like concat('%', #{salaryName}, '%')
+            </if>
+            <if test="basicSalary != null">
+                and basic_salary = #{basicSalary}
+            </if>
+            <if test="bonus != null">
+                and bonus = #{bonus}
+            </if>
+            <if test="lunchSalary != null">
+                and lunch_salary = #{lunchSalary}
+            </if>
+            <if test="trafficSalary != null">
+                and traffic_salary = #{trafficSalary}
+            </if>
+            <if test="allSalary != null">
+                and all_salary = #{allSalary}
+            </if>
+            <if test="pensionBase != null">
+                and pension_base = #{pensionBase}
+            </if>
+            <if test="pensionPer != null">
+                and pension_per = #{pensionPer}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="medicalBase != null">
+                and medical_base = #{medicalBase}
+            </if>
+            <if test="medicalPer != null">
+                and medical_per = #{medicalPer}
+            </if>
+            <if test="accumulationFundBase != null">
+                and accumulation_fund_base = #{accumulationFundBase}
+            </if>
+            <if test="accumulationFundPer != null">
+                and accumulation_fund_per = #{accumulationFundPer}
+            </if>
         </where>
     </select>
 
@@ -53,63 +94,144 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSalary" useGeneratedKeys="true" keyProperty="salaryId">
         insert into salary
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="salaryName != null">salary_name,</if>
-            <if test="basicSalary != null">basic_salary,</if>
-            <if test="bonus != null">bonus,</if>
-            <if test="lunchSalary != null">lunch_salary,</if>
-            <if test="trafficSalary != null">traffic_salary,</if>
-            <if test="allSalary != null">all_salary,</if>
-            <if test="pensionBase != null">pension_base,</if>
-            <if test="pensionPer != null">pension_per,</if>
-            <if test="createDate != null">create_date,</if>
-            <if test="medicalBase != null">medical_base,</if>
-            <if test="medicalPer != null">medical_per,</if>
-            <if test="accumulationFundBase != null">accumulation_fund_base,</if>
-            <if test="accumulationFundPer != null">accumulation_fund_per,</if>
-         </trim>
+            <if test="salaryName != null">
+                salary_name,
+            </if>
+            <if test="basicSalary != null">
+                basic_salary,
+            </if>
+            <if test="bonus != null">
+                bonus,
+            </if>
+            <if test="lunchSalary != null">
+                lunch_salary,
+            </if>
+            <if test="trafficSalary != null">
+                traffic_salary,
+            </if>
+            <if test="allSalary != null">
+                all_salary,
+            </if>
+            <if test="pensionBase != null">
+                pension_base,
+            </if>
+            <if test="pensionPer != null">
+                pension_per,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="medicalBase != null">
+                medical_base,
+            </if>
+            <if test="medicalPer != null">
+                medical_per,
+            </if>
+            <if test="accumulationFundBase != null">
+                accumulation_fund_base,
+            </if>
+            <if test="accumulationFundPer != null">
+                accumulation_fund_per,
+            </if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="salaryName != null">#{salaryName},</if>
-            <if test="basicSalary != null">#{basicSalary},</if>
-            <if test="bonus != null">#{bonus},</if>
-            <if test="lunchSalary != null">#{lunchSalary},</if>
-            <if test="trafficSalary != null">#{trafficSalary},</if>
-            <if test="allSalary != null">#{allSalary},</if>
-            <if test="pensionBase != null">#{pensionBase},</if>
-            <if test="pensionPer != null">#{pensionPer},</if>
-            <if test="createDate != null">#{createDate},</if>
-            <if test="medicalBase != null">#{medicalBase},</if>
-            <if test="medicalPer != null">#{medicalPer},</if>
-            <if test="accumulationFundBase != null">#{accumulationFundBase},</if>
-            <if test="accumulationFundPer != null">#{accumulationFundPer},</if>
-         </trim>
+            <if test="salaryName != null">
+                #{salaryName},
+            </if>
+            <if test="basicSalary != null">
+                #{basicSalary},
+            </if>
+            <if test="bonus != null">
+                #{bonus},
+            </if>
+            <if test="lunchSalary != null">
+                #{lunchSalary},
+            </if>
+            <if test="trafficSalary != null">
+                #{trafficSalary},
+            </if>
+            <if test="allSalary != null">
+                #{allSalary},
+            </if>
+            <if test="pensionBase != null">
+                #{pensionBase},
+            </if>
+            <if test="pensionPer != null">
+                #{pensionPer},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="medicalBase != null">
+                #{medicalBase},
+            </if>
+            <if test="medicalPer != null">
+                #{medicalPer},
+            </if>
+            <if test="accumulationFundBase != null">
+                #{accumulationFundBase},
+            </if>
+            <if test="accumulationFundPer != null">
+                #{accumulationFundPer},
+            </if>
+        </trim>
     </insert>
 
     <update id="updateSalary">
         update salary
         <trim prefix="SET" suffixOverrides=",">
-            <if test="salaryName != null">salary_name = #{salaryName},</if>
-            <if test="basicSalary != null">basic_salary = #{basicSalary},</if>
-            <if test="bonus != null">bonus = #{bonus},</if>
-            <if test="lunchSalary != null">lunch_salary = #{lunchSalary},</if>
-            <if test="trafficSalary != null">traffic_salary = #{trafficSalary},</if>
-            <if test="allSalary != null">all_salary = #{allSalary},</if>
-            <if test="pensionBase != null">pension_base = #{pensionBase},</if>
-            <if test="pensionPer != null">pension_per = #{pensionPer},</if>
-            <if test="createDate != null">create_date = #{createDate},</if>
-            <if test="medicalBase != null">medical_base = #{medicalBase},</if>
-            <if test="medicalPer != null">medical_per = #{medicalPer},</if>
-            <if test="accumulationFundBase != null">accumulation_fund_base = #{accumulationFundBase},</if>
-            <if test="accumulationFundPer != null">accumulation_fund_per = #{accumulationFundPer},</if>
+            <if test="salaryName != null">
+                salary_name = #{salaryName},
+            </if>
+            <if test="basicSalary != null">
+                basic_salary = #{basicSalary},
+            </if>
+            <if test="bonus != null">
+                bonus = #{bonus},
+            </if>
+            <if test="lunchSalary != null">
+                lunch_salary = #{lunchSalary},
+            </if>
+            <if test="trafficSalary != null">
+                traffic_salary = #{trafficSalary},
+            </if>
+            <if test="allSalary != null">
+                all_salary = #{allSalary},
+            </if>
+            <if test="pensionBase != null">
+                pension_base = #{pensionBase},
+            </if>
+            <if test="pensionPer != null">
+                pension_per = #{pensionPer},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="medicalBase != null">
+                medical_base = #{medicalBase},
+            </if>
+            <if test="medicalPer != null">
+                medical_per = #{medicalPer},
+            </if>
+            <if test="accumulationFundBase != null">
+                accumulation_fund_base = #{accumulationFundBase},
+            </if>
+            <if test="accumulationFundPer != null">
+                accumulation_fund_per = #{accumulationFundPer},
+            </if>
         </trim>
         where salary_id = #{salaryId}
     </update>
 
     <delete id="deleteSalaryBySalaryId" parameterType="Long">
-        delete from salary where salary_id = #{salaryId}
+        delete
+        from salary
+        where salary_id = #{salaryId}
     </delete>
 
     <delete id="deleteSalaryBySalaryIds" parameterType="String">
-        delete from salary where salary_id in
+        delete
+        from salary where salary_id in
         <foreach item="salaryId" collection="array" open="(" separator="," close=")">
             #{salaryId}
         </foreach>

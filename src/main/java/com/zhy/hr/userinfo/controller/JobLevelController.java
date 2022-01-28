@@ -44,6 +44,11 @@ public class JobLevelController extends BaseController {
         return getDataTable(list);
     }
 
+    @GetMapping("/listAll")
+    public List<JobLevel> listAll(JobLevel jobLevel) {
+        return jobLevelService.selectJobLevelList(jobLevel);
+    }
+
     /**
      * 导出职称列表
      */

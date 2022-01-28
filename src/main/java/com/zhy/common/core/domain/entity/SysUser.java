@@ -7,6 +7,10 @@ import com.zhy.common.annotation.Excel.ColumnType;
 import com.zhy.common.annotation.Excel.Type;
 import com.zhy.common.annotation.Excels;
 import com.zhy.common.core.domain.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -21,6 +25,9 @@ import java.util.List;
  *
  * @author zhy
  */
+@Data
+@Builder
+@AllArgsConstructor
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

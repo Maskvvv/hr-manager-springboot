@@ -44,6 +44,11 @@ public class SalaryController extends BaseController {
         return getDataTable(list);
     }
 
+    @GetMapping("/listAll")
+    public List<Salary> listAll(Salary salary) {
+        return salaryService.selectSalaryList(salary);
+    }
+
     /**
      * 导出套账列表
      */

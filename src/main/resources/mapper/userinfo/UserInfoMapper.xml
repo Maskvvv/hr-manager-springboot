@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.hr.userinfo.mapper.UserInfoMapper">
+    <resultMap type="com.zhy.hr.userinfo.domain.UserInfo" id="UserInfoResult">
+        <result property="userInfoId" column="user_info_id"/>
+        <result property="salaryId" column="salary_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userInfoName" column="user_info_name"/>
+        <result property="birthday" column="birthday"/>
+        <result property="idCard" column="id_card"/>
+        <result property="maritalStatus" column="marital_status"/>
+        <result property="nationId" column="nation_id"/>
+        <result property="nativePlace" column="native_place"/>
+        <result property="politicsId" column="politics_id"/>
+        <result property="address" column="address"/>
+        <result property="jobLevelId" column="job_level_id"/>
+        <result property="engageForm" column="engage_form"/>
+        <result property="tiptopDegree" column="tiptop_degree"/>
+        <result property="specialty" column="specialty"/>
+        <result property="school" column="school"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="workState" column="work_state"/>
+        <result property="conversionTime" column="conversion_time"/>
+        <result property="notWorkDate" column="not_work_date"/>
+        <result property="beginContract" column="begin_contract"/>
+        <result property="endContract" column="end_contract"/>
+        <result property="workAge" column="work_age"/>
+        <association property="salary" resultMap="com.zhy.hr.userinfo.mapper.SalaryMapper.SalaryResult"
+                     columnPrefix="sa_"/>
+        <association property="sysUser" resultMap="com.zhy.system.mapper.SysUserMapper.SysUserResult"
+                     columnPrefix="su_"/>
+        <association property="nation" resultMap="com.zhy.hr.userinfo.mapper.NationMapper.NationResult"
+                     columnPrefix="na_"/>
+        <association property="politicsStatus" resultMap="com.zhy.hr.userinfo.mapper.PoliticsStatusMapper.PoliticsStatusResult"
+                     columnPrefix="ps_"/>
+        <association property="jobLevel" resultMap="com.zhy.hr.userinfo.mapper.JobLevelMapper.JobLevelResult"
+                     columnPrefix="jl_"/>
+        <association property="sysDept" resultMap="com.zhy.system.mapper.SysDeptMapper.SysDeptResult"
+                     columnPrefix="sd_"/>
+    </resultMap>
+
+
+    <sql id="selectUserInfoVo">
+        select ui.user_info_id,
+        ui.salary_id,
+        ui.user_id,
+        ui.user_info_name,
+        ui.birthday,
+        ui.id_card,
+        ui.marital_status,
+        ui.nation_id,
+        ui.native_place,
+        ui.politics_id,
+        ui.address,
+        ui.job_level_id,
+        ui.engage_form,
+        ui.tiptop_degree,
+        ui.specialty,
+        ui.school,
+        ui.begin_date,
+        ui.work_state,
+        ui.conversion_time,
+        ui.not_work_date,
+        ui.begin_contract,
+        ui.end_contract,
+        ui.work_age
+        <include refid="salaryColumn"/>
+        <include refid="sysUserColumn"/>
+        <include refid="nationColumn"/>
+        <include refid="politicsStatusColumn"/>
+        <include refid="jobLevelColumn"/>
+        <include refid="sysDeptColumn"/>
+        from user_info ui
+        left join salary sa on sa.salary_id = ui.salary_id
+        left join sys_user su on su.user_id = ui.user_id
+        left join nation na on na.nation_id = ui.nation_id
+        left join politics_status ps on ps.politics_id = ui.politics_id
+        left join job_level jl on jl.id = ui.job_level_id
+        left join sys_dept sd on sd.dept_id = su.dept_id
+    </sql>
+
+    <sql id="salaryColumn">
+       ,sa.salary_name AS sa_salary_name,
+        sa.basic_salary AS sa_basic_salary,
+        sa.bonus AS sa_bonus,
+        sa.lunch_salary AS sa_lunch_salary,
+        sa.traffic_salary AS sa_traffic_salary,
+        sa.all_salary AS sa_all_salary,
+        sa.pension_base AS sa_pension_base,
+        sa.pension_per AS sa_pension_per,
+        sa.create_date AS sa_create_date,
+        sa.medical_base AS sa_medical_base,
+        sa.medical_per AS sa_medical_per,
+        sa.accumulation_fund_base AS sa_accumulation_fund_base,
+        sa.accumulation_fund_per AS sa_accumulation_fund_per
+    </sql>
+    <sql id="sysUserColumn">
+       ,su.user_id AS su_user_id,
+        su.dept_id AS su_dept_id,
+        su.user_name AS su_user_name,
+        su.nick_name AS su_nick_name,
+        su.email AS su_email,
+        su.avatar AS su_avatar,
+        su.phonenumber AS su_phonenumber,
+        su.password AS su_password,
+        su.sex AS su_sex,
+        su.status AS su_status,
+        su.del_flag AS su_del_flag,
+        su.login_ip AS su_login_ip,
+        su.login_date AS su_login_date,
+        su.create_by AS su_create_by,
+        su.create_time AS su_create_time,
+        su.remark AS su_remark
+    </sql>
+    <sql id="nationColumn">
+       ,na.nation_id AS na_nation_id,
+        na.nation_name AS na_nation_name
+    </sql>
+    <sql id="politicsStatusColumn">
+       ,ps.politics_id AS ps_politics_id,
+        ps.politics_name AS ps_politics_name
+    </sql>
+    <sql id="jobLevelColumn">
+       ,jl.id AS jl_id,
+        jl.name AS jl_name,
+        jl.title_level AS jl_title_level,
+        jl.create_date AS jl_create_date,
+        jl.enabled AS jl_enabled
+    </sql>
+    <sql id="sysDeptColumn">
+        ,sd.dept_name AS sd_dept_name
+        ,sd.dept_id AS sd_dept_id
+    </sql>
+
+    <select id="selectUserInfoList" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        <where>
+            <if test="userInfoId != null">
+                and ui.user_info_id = #{userInfoId}
+            </if>
+            <if test="salaryId != null">
+                and ui.salary_id = #{salaryId}
+            </if>
+            <if test="userId != null">
+                and ui.user_id = #{userId}
+            </if>
+            <if test="userInfoName != null  and userInfoName != ''">
+                and ui.user_info_name like concat('%', #{userInfoName}, '%')
+            </if>
+            <if test="birthday != null">
+                and ui.birthday = #{birthday}
+            </if>
+            <if test="idCard != null  and idCard != ''">
+                and ui.id_card = #{idCard}
+            </if>
+            <if test="maritalStatus != null  and maritalStatus != ''">
+                and ui.marital_status = #{maritalStatus}
+            </if>
+            <if test="nationId != null">
+                and ui.nation_id = #{nationId}
+            </if>
+            <if test="nativePlace != null  and nativePlace != ''">
+                and ui.native_place = #{nativePlace}
+            </if>
+            <if test="politicsId != null">
+                and ui.politics_id = #{politicsId}
+            </if>
+            <if test="address != null  and address != ''">
+                and ui.address = #{address}
+            </if>
+            <if test="jobLevelId != null">
+                and ui.job_level_id = #{jobLevelId}
+            </if>
+            <if test="engageForm != null  and engageForm != ''">
+                and ui.engage_form = #{engageForm}
+            </if>
+            <if test="tiptopDegree != null  and tiptopDegree != ''">
+                and ui.tiptop_degree = #{tiptopDegree}
+            </if>
+            <if test="specialty != null  and specialty != ''">
+                and ui.specialty = #{specialty}
+            </if>
+            <if test="school != null  and school != ''">
+                and ui.school = #{school}
+            </if>
+            <if test="beginDate != null">
+                and ui.begin_date = #{beginDate}
+            </if>
+            <if test="workState != null  and workState != ''">
+                and ui.work_state = #{workState}
+            </if>
+            <if test="conversionTime != null">
+                and ui.conversion_time = #{conversionTime}
+            </if>
+            <if test="notWorkDate != null">
+                and ui.not_work_date = #{notWorkDate}
+            </if>
+            <if test="beginContract != null">
+                and ui.begin_contract = #{beginContract}
+            </if>
+            <if test="endContract != null">
+                and ui.end_contract = #{endContract}
+            </if>
+            <if test="workAge != null">
+                and ui.work_age = #{workAge}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserInfoByUserInfoId" parameterType="Long" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        where ui.user_info_id = #{userInfoId}
+    </select>
+
+    <insert id="insertUserInfo" useGeneratedKeys="true" keyProperty="userInfoId">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="salaryId != null">
+                salary_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userInfoName != null">
+                user_info_name,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="maritalStatus != null">
+                marital_status,
+            </if>
+            <if test="nationId != null">
+                nation_id,
+            </if>
+            <if test="nativePlace != null">
+                native_place,
+            </if>
+            <if test="politicsId != null">
+                politics_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="jobLevelId != null">
+                job_level_id,
+            </if>
+            <if test="engageForm != null">
+                engage_form,
+            </if>
+            <if test="tiptopDegree != null">
+                tiptop_degree,
+            </if>
+            <if test="specialty != null">
+                specialty,
+            </if>
+            <if test="school != null">
+                school,
+            </if>
+            <if test="beginDate != null">
+                begin_date,
+            </if>
+            <if test="workState != null">
+                work_state,
+            </if>
+            <if test="conversionTime != null">
+                conversion_time,
+            </if>
+            <if test="notWorkDate != null">
+                not_work_date,
+            </if>
+            <if test="beginContract != null">
+                begin_contract,
+            </if>
+            <if test="endContract != null">
+                end_contract,
+            </if>
+            <if test="workAge != null">
+                work_age,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="salaryId != null">
+                #{salaryId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="userInfoName != null">
+                #{userInfoName},
+            </if>
+            <if test="birthday != null">
+                #{birthday},
+            </if>
+            <if test="idCard != null">
+                #{idCard},
+            </if>
+            <if test="maritalStatus != null">
+                #{maritalStatus},
+            </if>
+            <if test="nationId != null">
+                #{nationId},
+            </if>
+            <if test="nativePlace != null">
+                #{nativePlace},
+            </if>
+            <if test="politicsId != null">
+                #{politicsId},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="jobLevelId != null">
+                #{jobLevelId},
+            </if>
+            <if test="engageForm != null">
+                #{engageForm},
+            </if>
+            <if test="tiptopDegree != null">
+                #{tiptopDegree},
+            </if>
+            <if test="specialty != null">
+                #{specialty},
+            </if>
+            <if test="school != null">
+                #{school},
+            </if>
+            <if test="beginDate != null">
+                #{beginDate},
+            </if>
+            <if test="workState != null">
+                #{workState},
+            </if>
+            <if test="conversionTime != null">
+                #{conversionTime},
+            </if>
+            <if test="notWorkDate != null">
+                #{notWorkDate},
+            </if>
+            <if test="beginContract != null">
+                #{beginContract},
+            </if>
+            <if test="endContract != null">
+                #{endContract},
+            </if>
+            <if test="workAge != null">
+                #{workAge},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUserInfo">
+        update user_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="salaryId != null">
+                salary_id = #{salaryId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="userInfoName != null">
+                user_info_name = #{userInfoName},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard},
+            </if>
+            <if test="maritalStatus != null">
+                marital_status = #{maritalStatus},
+            </if>
+            <if test="nationId != null">
+                nation_id = #{nationId},
+            </if>
+            <if test="nativePlace != null">
+                native_place = #{nativePlace},
+            </if>
+            <if test="politicsId != null">
+                politics_id = #{politicsId},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="jobLevelId != null">
+                job_level_id = #{jobLevelId},
+            </if>
+            <if test="engageForm != null">
+                engage_form = #{engageForm},
+            </if>
+            <if test="tiptopDegree != null">
+                tiptop_degree = #{tiptopDegree},
+            </if>
+            <if test="specialty != null">
+                specialty = #{specialty},
+            </if>
+            <if test="school != null">
+                school = #{school},
+            </if>
+            <if test="beginDate != null">
+                begin_date = #{beginDate},
+            </if>
+            <if test="workState != null">
+                work_state = #{workState},
+            </if>
+            <if test="conversionTime != null">
+                conversion_time = #{conversionTime},
+            </if>
+            <if test="notWorkDate != null">
+                not_work_date = #{notWorkDate},
+            </if>
+            <if test="beginContract != null">
+                begin_contract = #{beginContract},
+            </if>
+            <if test="endContract != null">
+                end_contract = #{endContract},
+            </if>
+            <if test="workAge != null">
+                work_age = #{workAge},
+            </if>
+        </trim>
+        where user_info_id = #{userInfoId}
+    </update>
+
+    <delete id="deleteUserInfoByUserInfoId" parameterType="Long">
+        delete
+        from user_info
+        where user_info_id = #{userInfoId}
+    </delete>
+
+    <delete id="deleteUserInfoByUserInfoIds" parameterType="String">
+        delete
+        from user_info where user_info_id in
+        <foreach item="userInfoId" collection="array" open="(" separator="," close=")">
+            #{userInfoId}
+        </foreach>
+    </delete>
+</mapper>
