@@ -1,8 +1,13 @@
 package com.zhy.hr.userinfo.service;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.zhy.common.core.domain.AjaxResult;
 import com.zhy.hr.userinfo.domain.UserInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户详细信息Service接口
@@ -58,4 +63,14 @@ public interface IUserInfoService {
      * @return 结果
      */
     public int deleteUserInfoByUserInfoId(Long userInfoId);
+
+    /**
+     * 导入模板
+     */
+    AjaxResult importTemplate() throws IOException;
+
+    /**
+     * 导入数据
+     */
+    String importData(MultipartFile file) throws IOException;
 }

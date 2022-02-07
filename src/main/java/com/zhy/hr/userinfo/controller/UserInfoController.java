@@ -1,7 +1,11 @@
 package com.zhy.hr.userinfo.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.zhy.common.core.domain.entity.SysUser;
+
+import com.zhy.common.utils.poi.ExcelUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +22,11 @@ import com.zhy.common.core.domain.AjaxResult;
 import com.zhy.common.enums.BusinessType;
 import com.zhy.hr.userinfo.domain.UserInfo;
 import com.zhy.hr.userinfo.service.IUserInfoService;
-import com.zhy.common.utils.poi.ExcelUtil;
+
 import com.zhy.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户详细信息Controller
@@ -93,5 +100,21 @@ public class UserInfoController extends BaseController {
     @DeleteMapping("/{userInfoIds}")
     public AjaxResult remove(@PathVariable Long[] userInfoIds) {
         return toAjax(userInfoService.deleteUserInfoByUserInfoIds(userInfoIds));
+    }
+
+    /**
+     * 生成导入模板
+     */
+    @GetMapping("/importTemplate")
+    public AjaxResult importTemplate() throws IOException {
+        return userInfoService.importTemplate();
+    }
+
+    /**
+     * 导入数据
+     */
+    @PostMapping("/importData")
+    public String importData(MultipartFile file) throws Exception {
+        return userInfoService.importData(file);
     }
 }

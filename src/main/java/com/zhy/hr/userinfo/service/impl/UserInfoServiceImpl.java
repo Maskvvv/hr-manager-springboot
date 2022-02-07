@@ -1,13 +1,39 @@
 package com.zhy.hr.userinfo.service.impl;
+import com.zhy.hr.userinfo.domain.PoliticsStatus;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.extra.pinyin.PinyinUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
+import com.zhy.common.config.RuoYiConfig;
+import com.zhy.common.core.domain.AjaxResult;
+import com.zhy.common.core.domain.entity.SysDept;
 import com.zhy.common.core.domain.entity.SysUser;
 import com.zhy.common.utils.SecurityUtils;
+import com.zhy.hr.userinfo.domain.JobLevel;
+import com.zhy.hr.userinfo.domain.Nation;
+import com.zhy.hr.userinfo.domain.Salary;
+import com.zhy.hr.userinfo.mapper.JobLevelMapper;
+import com.zhy.hr.userinfo.mapper.NationMapper;
+import com.zhy.hr.userinfo.mapper.PoliticsStatusMapper;
+import com.zhy.hr.userinfo.mapper.SalaryMapper;
+import com.zhy.system.mapper.SysDeptMapper;
 import com.zhy.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +42,10 @@ import com.zhy.hr.userinfo.domain.UserInfo;
 import com.zhy.hr.userinfo.service.IUserInfoService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户详细信息Service业务层处理
@@ -30,6 +60,22 @@ public class UserInfoServiceImpl implements IUserInfoService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private SalaryMapper salaryMapper;
+
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
+
+    @Autowired
+    private JobLevelMapper jobLevelMapper;
+
+    @Autowired
+    private NationMapper nationMapper;
+
+    @Autowired
+    private PoliticsStatusMapper politicsStatusMapper;
+
 
     /**
      * 查询用户详细信息
@@ -129,5 +175,88 @@ public class UserInfoServiceImpl implements IUserInfoService {
             }
         }
         return username;
+    }
+
+    /**
+     * 生成导入模板
+     * // TODO: 2022/2/7 用户信息导入
+     */
+    @Override
+    public AjaxResult importTemplate() throws IOException {
+        String fileName = "writeTest.xlsx";
+        String filePath = RuoYiConfig.getDownloadPath() + fileName;
+
+        File file = new File(filePath);
+        if (file.isFile() && file.exists()) {
+            FileUtil.del(file);
+        }
+
+        List<String> row1 = CollUtil.newArrayList("员工姓名", "出生日期", "用户性别", "手机号码", "邮箱", "身份证号",
+                "婚姻状况", "民族", "套账", "所属部门", "籍贯", "政治面貌", "联系地址", "职称", "聘用形式", "最高学历", "所属专业", "毕业院校",
+                "入职日期", "在职状态", "转正日期", "合同起始日期", "合同终止日期");
+
+        ExcelWriter writer = ExcelUtil.getWriter(filePath);
+
+        writer.writeHeadRow(row1);
+
+        //关闭writer，释放内存
+        writer.close();
+
+        return AjaxResult.success(fileName);
+
+    }
+
+    /**
+     * 导入数据
+     */
+    @Override
+    public String importData(MultipartFile file) throws IOException {
+
+        // TODO: 2022/1/28 导入excel
+        // 获取excel
+        ExcelReader reader = ExcelUtil.getReader(file.getInputStream());
+        List<Map<String,Object>> userinfoList = reader.readAll();
+
+        // 查询salary
+        List<Salary> salaryList = salaryMapper.selectSalaryList(null);
+        List<SysDept> sysDeptList = sysDeptMapper.selectDeptList(null);
+        List<JobLevel> jobLevelList = jobLevelMapper.selectJobLevelList(null);
+        List<Nation> nationList = nationMapper.selectNationList(null);
+        List<PoliticsStatus> politicsStatusList = politicsStatusMapper.selectPoliticsStatusList(null);
+
+        List<String> titleList = CollUtil.newArrayList("员工姓名", "出生日期", "用户性别", "手机号码", "邮箱", "身份证号",
+                "婚姻状况", "民族", "套账", "所属部门", "籍贯", "政治面貌", "联系地址", "职称", "聘用形式", "最高学历", "所属专业", "毕业院校",
+                "入职日期", "在职状态", "转正日期", "合同起始日期", "合同终止日期");
+
+        for (Map<String, Object> userinfoMap : userinfoList) {
+            UserInfo userInfo = new UserInfo();
+            SysUser sysUser = new SysUser();
+            userInfo.setSysUser(sysUser);
+
+            userInfo.setUserInfoName((String) userinfoMap.get(titleList.get(0)));
+            userInfo.setBirthday((Date) userinfoMap.get(titleList.get(1)));
+
+            String sex = (String) userinfoMap.get(titleList.get(2));
+            userInfo.getSysUser().setSex( "男".equals(sex) ? "0" : "女".equals(sex) ? "1" : "2");
+
+            userInfo.getSysUser().setPhonenumber((String) userinfoMap.get(titleList.get(3)));
+            userInfo.getSysUser().setEmail((String) userinfoMap.get(titleList.get(4)));
+            userInfo.setIdCard((String) userinfoMap.get(titleList.get(5)));
+            userInfo.setMaritalStatus("0");
+
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(7)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(8)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(9)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(10)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(11)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(12)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(13)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(14)));
+            userInfo.getSysUser().setSex((String) userinfoMap.get(titleList.get(15)));
+
+        }
+
+        return "success";
+
     }
 }
