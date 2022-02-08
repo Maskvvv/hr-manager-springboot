@@ -1,22 +1,16 @@
 package com.zhy.hr.userinfo.service.impl;
+import com.zhy.framework.rabbitmq.config.RabbitMQConfig;
 import com.zhy.hr.userinfo.domain.PoliticsStatus;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.extra.pinyin.PinyinUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
@@ -35,6 +29,7 @@ import com.zhy.hr.userinfo.mapper.PoliticsStatusMapper;
 import com.zhy.hr.userinfo.mapper.SalaryMapper;
 import com.zhy.system.mapper.SysDeptMapper;
 import com.zhy.system.mapper.SysUserMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.zhy.hr.userinfo.mapper.UserInfoMapper;
@@ -43,9 +38,6 @@ import com.zhy.hr.userinfo.service.IUserInfoService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户详细信息Service业务层处理
@@ -76,6 +68,8 @@ public class UserInfoServiceImpl implements IUserInfoService {
     @Autowired
     private PoliticsStatusMapper politicsStatusMapper;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 查询用户详细信息
@@ -119,6 +113,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
         sysUser.setRoleIds(new Long[]{2L});
         sysUserMapper.insertUser(sysUser);
 
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, sysUser.getUserId());
+
+        // 创建用户信息
         userInfo.setUserId(sysUser.getUserId());
         return userInfoMapper.insertUserInfo(userInfo);
     }
