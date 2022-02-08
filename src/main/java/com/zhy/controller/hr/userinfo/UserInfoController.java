@@ -1,4 +1,4 @@
-package com.zhy.hr.userinfo.controller;
+package com.zhy.controller.hr.userinfo;
 
 import java.io.IOException;
 import java.util.List;
