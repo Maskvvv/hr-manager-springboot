@@ -44,6 +44,7 @@ spring:
     basename: i18n/messages
   profiles:
     active: druid
+    include: mail
   # 文件上传
   servlet:
      multipart:
@@ -85,6 +86,17 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
+
+#  mail:
+#    host: smtp.qq.com
+#    protocol: smtp
+#    default-encoding: utf-8
+#    password: lvqdnlqcawdfihif
+#    username: 1429855087@qq.com
+#    port: 587
 
 # token配置
 token:

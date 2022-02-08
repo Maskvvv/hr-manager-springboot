@@ -113,11 +113,14 @@ public class UserInfoServiceImpl implements IUserInfoService {
         sysUser.setRoleIds(new Long[]{2L});
         sysUserMapper.insertUser(sysUser);
 
-        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, sysUser.getUserId());
-
         // 创建用户信息
         userInfo.setUserId(sysUser.getUserId());
-        return userInfoMapper.insertUserInfo(userInfo);
+        int flag = userInfoMapper.insertUserInfo(userInfo);
+
+        // 发送邮件
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, userInfo.getUserInfoId());
+
+        return flag;
     }
 
     /**
