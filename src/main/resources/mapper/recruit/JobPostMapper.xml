@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.hr.recruit.mapper.JobPostMapper">
+
+    <resultMap type="com.zhy.hr.recruit.domain.JobPost" id="JobPostResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="subTitle"    column="sub_title"    />
+        <result property="description"    column="description"    />
+        <result property="requirement"    column="requirement"    />
+        <result property="jobCategory"    column="job_category"    />
+        <result property="cityInfo"    column="city_info"    />
+        <result property="recruitType"    column="recruit_type"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="deliveryInfoId"    column="delivery_info_id"    />
+        <result property="channelOnlineStatus"    column="channel_online_status"    />
+        <result property="jobHotFlag"    column="job_hot_flag"    />
+        <result property="jobSubject"    column="job_subject"    />
+        <result property="code"    column="code"    />
+        <result property="departmentId"    column="department_id"    />
+        <result property="jobProcessId"    column="job_process_id"    />
+        <result property="jobId"    column="job_id"    />
+        <result property="cityList"    column="city_list"    />
+    </resultMap>
+
+    <sql id="selectJobPostVo">
+        select id, title, sub_title, description, requirement, job_category, city_info, recruit_type, publish_time, delivery_info_id, channel_online_status, job_hot_flag, job_subject, code, department_id, job_process_id, job_id, city_list from job_post
+    </sql>
+
+    <select id="selectJobPostList" resultMap="JobPostResult">
+        <include refid="selectJobPostVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="subTitle != null  and subTitle != ''"> and sub_title = #{subTitle}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="requirement != null  and requirement != ''"> and requirement = #{requirement}</if>
+            <if test="jobCategory != null  and jobCategory != ''"> and job_category = #{jobCategory}</if>
+            <if test="cityInfo != null  and cityInfo != ''"> and city_info = #{cityInfo}</if>
+            <if test="recruitType != null  and recruitType != ''"> and recruit_type = #{recruitType}</if>
+            <if test="publishTime != null "> and publish_time = #{publishTime}</if>
+            <if test="deliveryInfoId != null  and deliveryInfoId != ''"> and delivery_info_id = #{deliveryInfoId}</if>
+            <if test="channelOnlineStatus != null "> and channel_online_status = #{channelOnlineStatus}</if>
+            <if test="jobHotFlag != null "> and job_hot_flag = #{jobHotFlag}</if>
+            <if test="jobSubject != null  and jobSubject != ''"> and job_subject = #{jobSubject}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="departmentId != null  and departmentId != ''"> and department_id = #{departmentId}</if>
+            <if test="jobProcessId != null  and jobProcessId != ''"> and job_process_id = #{jobProcessId}</if>
+            <if test="jobId != null  and jobId != ''"> and job_id = #{jobId}</if>
+            <if test="cityList != null  and cityList != ''"> and city_list = #{cityList}</if>
+        </where>
+    </select>
+
+    <select id="selectJobPostById" parameterType="String" resultMap="JobPostResult">
+        <include refid="selectJobPostVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertJobPost" >
+        insert into job_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="subTitle != null">sub_title,</if>
+            <if test="description != null">description,</if>
+            <if test="requirement != null">requirement,</if>
+            <if test="jobCategory != null">job_category,</if>
+            <if test="cityInfo != null">city_info,</if>
+            <if test="recruitType != null">recruit_type,</if>
+            <if test="publishTime != null">publish_time,</if>
+            <if test="deliveryInfoId != null">delivery_info_id,</if>
+            <if test="channelOnlineStatus != null">channel_online_status,</if>
+            <if test="jobHotFlag != null">job_hot_flag,</if>
+            <if test="jobSubject != null">job_subject,</if>
+            <if test="code != null">code,</if>
+            <if test="departmentId != null">department_id,</if>
+            <if test="jobProcessId != null">job_process_id,</if>
+            <if test="jobId != null">job_id,</if>
+            <if test="cityList != null">city_list,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="subTitle != null">#{subTitle},</if>
+            <if test="description != null">#{description},</if>
+            <if test="requirement != null">#{requirement},</if>
+            <if test="jobCategory != null">#{jobCategory},</if>
+            <if test="cityInfo != null">#{cityInfo},</if>
+            <if test="recruitType != null">#{recruitType},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="deliveryInfoId != null">#{deliveryInfoId},</if>
+            <if test="channelOnlineStatus != null">#{channelOnlineStatus},</if>
+            <if test="jobHotFlag != null">#{jobHotFlag},</if>
+            <if test="jobSubject != null">#{jobSubject},</if>
+            <if test="code != null">#{code},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="jobProcessId != null">#{jobProcessId},</if>
+            <if test="jobId != null">#{jobId},</if>
+            <if test="cityList != null">#{cityList},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJobPost">
+        update job_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="subTitle != null">sub_title = #{subTitle},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="requirement != null">requirement = #{requirement},</if>
+            <if test="jobCategory != null">job_category = #{jobCategory},</if>
+            <if test="cityInfo != null">city_info = #{cityInfo},</if>
+            <if test="recruitType != null">recruit_type = #{recruitType},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="deliveryInfoId != null">delivery_info_id = #{deliveryInfoId},</if>
+            <if test="channelOnlineStatus != null">channel_online_status = #{channelOnlineStatus},</if>
+            <if test="jobHotFlag != null">job_hot_flag = #{jobHotFlag},</if>
+            <if test="jobSubject != null">job_subject = #{jobSubject},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="departmentId != null">department_id = #{departmentId},</if>
+            <if test="jobProcessId != null">job_process_id = #{jobProcessId},</if>
+            <if test="jobId != null">job_id = #{jobId},</if>
+            <if test="cityList != null">city_list = #{cityList},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJobPostById" parameterType="String">
+        delete from job_post where id = #{id}
+    </delete>
+
+    <delete id="deleteJobPostByIds" parameterType="String">
+        delete from job_post where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.hr.recruit.mapper.JobTypeMapper">
+
+    <resultMap type="com.zhy.hr.recruit.domain.JobType" id="JobTypeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="enName"    column="en_name"    />
+        <result property="i18nName"    column="i18n_name"    />
+        <result property="depth"    column="depth"    />
+        <result property="parent"    column="parent"    />
+    </resultMap>
+
+    <sql id="selectJobTypeVo">
+        select id, name, en_name, i18n_name, depth, parent from job_type
+    </sql>
+
+    <select id="selectJobTypeList" resultMap="JobTypeResult">
+        <include refid="selectJobTypeVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+            <if test="i18nName != null  and i18nName != ''"> and i18n_name like concat('%', #{i18nName}, '%')</if>
+            <if test="depth != null "> and depth = #{depth}</if>
+            <if test="parent != null  and parent != ''"> and parent = #{parent}</if>
+        </where>
+    </select>
+
+    <select id="selectJobTypeById" parameterType="String" resultMap="JobTypeResult">
+        <include refid="selectJobTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertJobType">
+        insert into job_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="enName != null">en_name,</if>
+            <if test="i18nName != null">i18n_name,</if>
+            <if test="depth != null">depth,</if>
+            <if test="parent != null">parent,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="enName != null">#{enName},</if>
+            <if test="i18nName != null">#{i18nName},</if>
+            <if test="depth != null">#{depth},</if>
+            <if test="parent != null">#{parent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJobType">
+        update job_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="enName != null">en_name = #{enName},</if>
+            <if test="i18nName != null">i18n_name = #{i18nName},</if>
+            <if test="depth != null">depth = #{depth},</if>
+            <if test="parent != null">parent = #{parent},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJobTypeById" parameterType="String">
+        delete from job_type where id = #{id}
+    </delete>
+
+    <delete id="deleteJobTypeByIds" parameterType="String">
+        delete from job_type where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

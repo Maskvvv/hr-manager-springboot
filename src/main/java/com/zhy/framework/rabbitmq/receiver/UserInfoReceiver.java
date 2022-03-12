@@ -62,6 +62,7 @@ public class UserInfoReceiver {
             String mail = templateEngine.process("mail", context);
             helper.setText(mail, true);
             javaMailSender.send(msg);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
         } catch (Exception e) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
         }

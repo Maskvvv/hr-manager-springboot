@@ -165,6 +165,26 @@ public class UserInfoServiceImpl implements IUserInfoService {
     private String generateUsername(UserInfo userInfo) {
         String username = PinyinUtil.getPinyin(userInfo.getUserInfoName(), "");
         List<String> usernameList = sysUserMapper.selectUserList(SysUser.builder().userName(username).build()).stream().map(SysUser::getUserName).collect(Collectors.toList());
+        // // TODO: 2022/2/22 剑指 Offer 53 - II. 0～n-1中缺失的数字
+
+        class Solution {
+
+            public int missingNumber(int[] nums) {
+                int i = 0;
+                int j = nums.length - 1;
+
+                while (i <= j) {
+                    int middle = (j + i) / 2;
+                    if (nums[middle] == middle) {
+                        i = middle + 1;
+                    } else {
+                        j = middle - 1;
+                    }
+                }
+                return i;
+            }
+        }
+
         if (!CollectionUtils.isEmpty(usernameList)) {
             String preUsername = usernameList.get(usernameList.size() - 1);
             String[] usernameSuffix = preUsername.split(username);
