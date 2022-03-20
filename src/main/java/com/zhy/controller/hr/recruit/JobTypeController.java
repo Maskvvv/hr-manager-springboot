@@ -30,8 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/recruit/jobType")
-public class JobTypeController extends BaseController
-{
+public class JobTypeController extends BaseController {
     @Autowired
     private IJobTypeService jobTypeService;
 
@@ -40,8 +39,7 @@ public class JobTypeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('recruit:jobType:list')")
     @GetMapping("/list")
-    public TableDataInfo list(JobType jobType)
-    {
+    public TableDataInfo list(JobType jobType) {
         startPage();
         List<JobType> list = jobTypeService.selectJobTypeList(jobType);
         return getDataTable(list);
@@ -53,8 +51,7 @@ public class JobTypeController extends BaseController
     @PreAuthorize("@ss.hasPermi('recruit:jobType:export')")
     @Log(title = "职位类型", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(JobType jobType)
-    {
+    public AjaxResult export(JobType jobType) {
         List<JobType> list = jobTypeService.selectJobTypeList(jobType);
         ExcelUtil<JobType> util = new ExcelUtil<JobType>(JobType.class);
         return util.exportExcel(list, "职位类型数据");
@@ -65,8 +62,7 @@ public class JobTypeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('recruit:jobType:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") String id) {
         return AjaxResult.success(jobTypeService.selectJobTypeById(id));
     }
 
@@ -76,8 +72,7 @@ public class JobTypeController extends BaseController
     @PreAuthorize("@ss.hasPermi('recruit:jobType:add')")
     @Log(title = "职位类型", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody JobType jobType)
-    {
+    public AjaxResult add(@RequestBody JobType jobType) {
         return toAjax(jobTypeService.insertJobType(jobType));
     }
 
@@ -87,8 +82,7 @@ public class JobTypeController extends BaseController
     @PreAuthorize("@ss.hasPermi('recruit:jobType:edit')")
     @Log(title = "职位类型", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody JobType jobType)
-    {
+    public AjaxResult edit(@RequestBody JobType jobType) {
         return toAjax(jobTypeService.updateJobType(jobType));
     }
 
@@ -97,9 +91,8 @@ public class JobTypeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('recruit:jobType:remove')")
     @Log(title = "职位类型", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(jobTypeService.deleteJobTypeByIds(ids));
     }
 }

@@ -30,8 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/recruit/city")
-public class CityController extends BaseController
-{
+public class CityController extends BaseController {
     @Autowired
     private ICityService cityService;
 
@@ -40,8 +39,7 @@ public class CityController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('recruit:city:list')")
     @GetMapping("/list")
-    public TableDataInfo list(City city)
-    {
+    public TableDataInfo list(City city) {
         startPage();
         List<City> list = cityService.selectCityList(city);
         return getDataTable(list);
@@ -53,8 +51,7 @@ public class CityController extends BaseController
     @PreAuthorize("@ss.hasPermi('recruit:city:export')")
     @Log(title = "城市", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(City city)
-    {
+    public AjaxResult export(City city) {
         List<City> list = cityService.selectCityList(city);
         ExcelUtil<City> util = new ExcelUtil<City>(City.class);
         return util.exportExcel(list, "城市数据");
@@ -65,8 +62,7 @@ public class CityController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('recruit:city:query')")
     @GetMapping(value = "/{code}")
-    public AjaxResult getInfo(@PathVariable("code") String code)
-    {
+    public AjaxResult getInfo(@PathVariable("code") String code) {
         return AjaxResult.success(cityService.selectCityByCode(code));
     }
 
@@ -76,8 +72,7 @@ public class CityController extends BaseController
     @PreAuthorize("@ss.hasPermi('recruit:city:add')")
     @Log(title = "城市", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody City city)
-    {
+    public AjaxResult add(@RequestBody City city) {
         return toAjax(cityService.insertCity(city));
     }
 
@@ -87,8 +82,7 @@ public class CityController extends BaseController
     @PreAuthorize("@ss.hasPermi('recruit:city:edit')")
     @Log(title = "城市", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody City city)
-    {
+    public AjaxResult edit(@RequestBody City city) {
         return toAjax(cityService.updateCity(city));
     }
 
@@ -97,9 +91,8 @@ public class CityController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('recruit:city:remove')")
     @Log(title = "城市", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{codes}")
-    public AjaxResult remove(@PathVariable String[] codes)
-    {
+    @DeleteMapping("/{codes}")
+    public AjaxResult remove(@PathVariable String[] codes) {
         return toAjax(cityService.deleteCityByCodes(codes));
     }
 }

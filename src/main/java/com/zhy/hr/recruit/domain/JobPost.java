@@ -2,8 +2,11 @@ package com.zhy.hr.recruit.domain;
 
 import com.zhy.common.annotation.Excel;
 import com.zhy.common.core.domain.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Map;
 
 
 /**
@@ -12,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author ruoyi
  * @date 2022-03-12
  */
+@Data
 public class JobPost extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -45,22 +49,28 @@ public class JobPost extends BaseEntity {
     private String requirement;
 
     /**
-     * $column.columnComment
+     * 职位类型
      */
     @Excel(name = "职位名称")
-    private String jobCategory;
+    private String jobCategoryId;
+
+    private JobType jobCategory;
 
     /**
      * $column.columnComment
      */
     @Excel(name = "职位名称")
-    private String cityInfo;
+    private String cityInfoId;
+
+    private City cityInfo;
 
     /**
      * $column.columnComment
      */
     @Excel(name = "职位名称")
     private String recruitType;
+
+    private RecruitType recruit;
 
     /**
      * $column.columnComment
@@ -122,6 +132,8 @@ public class JobPost extends BaseEntity {
     @Excel(name = "职位名称")
     private String cityList;
 
+    private JobPostParam jobPostParam;
+
     public void setId(String id) {
         this.id = id;
     }
@@ -162,21 +174,6 @@ public class JobPost extends BaseEntity {
         return requirement;
     }
 
-    public void setJobCategory(String jobCategory) {
-        this.jobCategory = jobCategory;
-    }
-
-    public String getJobCategory() {
-        return jobCategory;
-    }
-
-    public void setCityInfo(String cityInfo) {
-        this.cityInfo = cityInfo;
-    }
-
-    public String getCityInfo() {
-        return cityInfo;
-    }
 
     public void setRecruitType(String recruitType) {
         this.recruitType = recruitType;

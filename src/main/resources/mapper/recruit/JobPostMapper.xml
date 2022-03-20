@@ -10,8 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="subTitle"    column="sub_title"    />
         <result property="description"    column="description"    />
         <result property="requirement"    column="requirement"    />
-        <result property="jobCategory"    column="job_category"    />
-        <result property="cityInfo"    column="city_info"    />
+        <result property="jobCategoryId"    column="job_category_id"    />
+        <result property="cityInfoId"    column="city_info_id"    />
         <result property="recruitType"    column="recruit_type"    />
         <result property="publishTime"    column="publish_time"    />
         <result property="deliveryInfoId"    column="delivery_info_id"    />
@@ -23,6 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="jobProcessId"    column="job_process_id"    />
         <result property="jobId"    column="job_id"    />
         <result property="cityList"    column="city_list"    />
+        <association property="jobCategory" resultMap="com.zhy.hr.recruit.mapper.JobTypeMapper.JobTypeResult" columnPrefix="category_"/>
+        <association property="cityInfo" resultMap="com.zhy.hr.recruit.mapper.CityMapper.CityResult" columnPrefix="city_"/>
     </resultMap>
 
     <sql id="selectJobPostVo">
@@ -30,7 +32,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectJobPostList" resultMap="JobPostResult">
-        <include refid="selectJobPostVo"/>
+        select
+        jp.id,
+        jp.title,
+        jp.sub_title,
+        jp.description,
+        jp.requirement,
+        jp.job_category AS job_category_id,
+        jp.city_info AS city_info_id,
+        jp.recruit_type,
+        jp.publish_time,
+        jp.delivery_info_id,
+        jp.channel_online_status,
+        jp.job_hot_flag,
+        jp.job_subject,
+        jp.code,
+        jp.department_id,
+        jp.job_process_id,
+        jp.job_id,
+        jp.city_list,
+
+        jt.id AS category_id,
+        jt.name AS category_name,
+        jt.en_name AS category_en_name,
+        jt.i18n_name AS category_i18n_name,
+        jt.depth AS category_depth,
+        jt.parent AS category_parent,
+
+        city.code AS city_code,
+        city.name AS city_name,
+        city.en_name AS city_en_name,
+        city.location_type AS city_location_type,
+        city.i18n_name AS city_i18n_name,
+        city.py_name AS city_py_name
+
+        from job_post jp
+        left join job_type jt on jt.id = jp.job_category
+        left join city on jp.city_info = city.code
         <where>
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="subTitle != null  and subTitle != ''"> and sub_title = #{subTitle}</if>
@@ -49,12 +87,65 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="jobProcessId != null  and jobProcessId != ''"> and job_process_id = #{jobProcessId}</if>
             <if test="jobId != null  and jobId != ''"> and job_id = #{jobId}</if>
             <if test="cityList != null  and cityList != ''"> and city_list = #{cityList}</if>
+            <if test="jobPostParam.keyword != null and jobPostParam.keyword != ''">
+                <bind name="jobTitle" value="'%' + jobPostParam.keyword + '%'"/>
+                and jp.title like #{jobTitle}
+            </if>
+            <if test="jobPostParam.jobCategoryIdList.size() != 0">
+                and jp.job_category in
+                <foreach collection="jobPostParam.jobCategoryIdList" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+            <if test="jobPostParam.locationCodeList.size() != 0">
+                and jp.city_info in
+                <foreach collection="jobPostParam.locationCodeList" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </select>
 
     <select id="selectJobPostById" parameterType="String" resultMap="JobPostResult">
-        <include refid="selectJobPostVo"/>
-        where id = #{id}
+        select
+        jp.id,
+        jp.title,
+        jp.sub_title,
+        jp.description,
+        jp.requirement,
+        jp.job_category AS job_category_id,
+        jp.city_info AS city_info_id,
+        jp.recruit_type,
+        jp.publish_time,
+        jp.delivery_info_id,
+        jp.channel_online_status,
+        jp.job_hot_flag,
+        jp.job_subject,
+        jp.code,
+        jp.department_id,
+        jp.job_process_id,
+        jp.job_id,
+        jp.city_list,
+
+        jt.id AS category_id,
+        jt.name AS category_name,
+        jt.en_name AS category_en_name,
+        jt.i18n_name AS category_i18n_name,
+        jt.depth AS category_depth,
+        jt.parent AS category_parent,
+
+        city.code AS city_code,
+        city.name AS city_name,
+        city.en_name AS city_en_name,
+        city.location_type AS city_location_type,
+        city.i18n_name AS city_i18n_name,
+        city.py_name AS city_py_name
+
+        from job_post jp
+        left join job_type jt on jt.id = jp.job_category
+        left join city on jp.city_info = city.code
+        where jp.id = #{id}
     </select>
 
     <insert id="insertJobPost" >

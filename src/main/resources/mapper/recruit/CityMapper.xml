@@ -18,14 +18,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectCityList" resultMap="CityResult">
-        <include refid="selectCityVo"/>
+        select
+        code,
+        name,
+        en_name,
+        location_type,
+        i18n_name,
+        py_name,
+        (select count(*) from job_post jp where jp.city_info = city.code) AS job_count
+        from city
         <where>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
-            <if test="locationType != null "> and location_type = #{locationType}</if>
-            <if test="i18nName != null  and i18nName != ''"> and i18n_name like concat('%', #{i18nName}, '%')</if>
-            <if test="pyName != null  and pyName != ''"> and py_name like concat('%', #{pyName}, '%')</if>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="enName != null  and enName != ''">
+                and en_name like concat('%', #{enName}, '%')
+            </if>
+            <if test="locationType != null">
+                and location_type = #{locationType}
+            </if>
+            <if test="i18nName != null  and i18nName != ''">
+                and i18n_name like concat('%', #{i18nName}, '%')
+            </if>
+            <if test="pyName != null  and pyName != ''">
+                and py_name like concat('%', #{pyName}, '%')
+            </if>
         </where>
+        order by job_count desc
     </select>
 
     <select id="selectCityByCode" parameterType="String" resultMap="CityResult">

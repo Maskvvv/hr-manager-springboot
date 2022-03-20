@@ -102,9 +102,9 @@ class CityMapperTest {
             List<JobPost> jobPostList = jsonObject.getJSONArray("job_post_list").toList(JobPost.class);
 
             for (JobPost jobPost : jobPostList) {
-                jobPost.setJobCategory(JSONUtil.parseObj(jobPost.getJobCategory()).get("id", String.class));
-                jobPost.setCityInfo(JSONUtil.parseObj(jobPost.getCityInfo()).get("code", String.class));
-                jobPostMapper.insertJobPost(jobPost);
+                //jobPost.setJobCategory(JSONUtil.parseObj(jobPost.getJobCategory()).get("id", String.class));
+                //jobPost.setCityInfo(JSONUtil.parseObj(jobPost.getCityInfo()).get("code", String.class));
+                //jobPostMapper.insertJobPost(jobPost);
             }
         }
 
