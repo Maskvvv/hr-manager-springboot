@@ -1,5 +1,7 @@
 package com.zhy;
 
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.IdUtil;
 import com.zhy.framework.rabbitmq.config.RabbitMQConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -83,6 +85,14 @@ class HrManagerApplicationTests {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format = dateFormat.format(new Date(1532058425000L));
         System.out.println(date);
+        System.out.println(System.currentTimeMillis());
+    }
+
+    @Test
+    void uuidTest() {
+
+        System.out.println(UUID.randomUUID().toString());
+        System.out.println(IdUtil.simpleUUID());
     }
 
 

@@ -100,11 +100,11 @@
             <if test="requirement != null  and requirement != ''">
                 and requirement = #{requirement}
             </if>
-            <if test="jobCategory != null  and jobCategory != ''">
-                and job_category = #{jobCategory}
+            <if test="jobCategoryId != null  and jobCategoryId != ''">
+                and job_category = #{jobCategoryId}
             </if>
-            <if test="cityInfo != null  and cityInfo != ''">
-                and city_info = #{cityInfo}
+            <if test="cityInfoId != null  and cityInfoId != ''">
+                and city_info = #{cityInfoId}
             </if>
             <if test="recruitType != null  and recruitType != ''">
                 and recruit_type = #{recruitType}
@@ -218,10 +218,10 @@
             <if test="requirement != null">
                 requirement,
             </if>
-            <if test="jobCategory != null">
+            <if test="jobCategoryId != null">
                 job_category,
             </if>
-            <if test="cityInfo != null">
+            <if test="cityInfoId != null">
                 city_info,
             </if>
             <if test="recruitType != null">
@@ -230,32 +230,11 @@
             <if test="publishTime != null">
                 publish_time,
             </if>
-            <if test="deliveryInfoId != null">
-                delivery_info_id,
-            </if>
-            <if test="channelOnlineStatus != null">
-                channel_online_status,
-            </if>
-            <if test="jobHotFlag != null">
-                job_hot_flag,
-            </if>
-            <if test="jobSubject != null">
-                job_subject,
-            </if>
             <if test="code != null">
                 code,
             </if>
             <if test="departmentId != null">
                 department_id,
-            </if>
-            <if test="jobProcessId != null">
-                job_process_id,
-            </if>
-            <if test="jobId != null">
-                job_id,
-            </if>
-            <if test="cityList != null">
-                city_list,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -274,11 +253,11 @@
             <if test="requirement != null">
                 #{requirement},
             </if>
-            <if test="jobCategory != null">
-                #{jobCategory},
+            <if test="jobCategoryId != null">
+                #{jobCategoryId},
             </if>
-            <if test="cityInfo != null">
-                #{cityInfo},
+            <if test="cityInfoId != null">
+                #{cityInfoId},
             </if>
             <if test="recruitType != null">
                 #{recruitType},
@@ -286,32 +265,11 @@
             <if test="publishTime != null">
                 #{publishTime},
             </if>
-            <if test="deliveryInfoId != null">
-                #{deliveryInfoId},
-            </if>
-            <if test="channelOnlineStatus != null">
-                #{channelOnlineStatus},
-            </if>
-            <if test="jobHotFlag != null">
-                #{jobHotFlag},
-            </if>
-            <if test="jobSubject != null">
-                #{jobSubject},
-            </if>
             <if test="code != null">
                 #{code},
             </if>
             <if test="departmentId != null">
                 #{departmentId},
-            </if>
-            <if test="jobProcessId != null">
-                #{jobProcessId},
-            </if>
-            <if test="jobId != null">
-                #{jobId},
-            </if>
-            <if test="cityList != null">
-                #{cityList},
             </if>
         </trim>
     </insert>
@@ -331,11 +289,11 @@
             <if test="requirement != null">
                 requirement = #{requirement},
             </if>
-            <if test="jobCategory != null">
-                job_category = #{jobCategory},
+            <if test="jobCategoryId != null">
+                job_category = #{jobCategoryId},
             </if>
-            <if test="cityInfo != null">
-                city_info = #{cityInfo},
+            <if test="cityInfoId != null">
+                city_info = #{cityInfoId},
             </if>
             <if test="recruitType != null">
                 recruit_type = #{recruitType},
@@ -343,32 +301,11 @@
             <if test="publishTime != null">
                 publish_time = #{publishTime},
             </if>
-            <if test="deliveryInfoId != null">
-                delivery_info_id = #{deliveryInfoId},
-            </if>
-            <if test="channelOnlineStatus != null">
-                channel_online_status = #{channelOnlineStatus},
-            </if>
-            <if test="jobHotFlag != null">
-                job_hot_flag = #{jobHotFlag},
-            </if>
-            <if test="jobSubject != null">
-                job_subject = #{jobSubject},
-            </if>
             <if test="code != null">
                 code = #{code},
             </if>
             <if test="departmentId != null">
                 department_id = #{departmentId},
-            </if>
-            <if test="jobProcessId != null">
-                job_process_id = #{jobProcessId},
-            </if>
-            <if test="jobId != null">
-                job_id = #{jobId},
-            </if>
-            <if test="cityList != null">
-                city_list = #{cityList},
             </if>
         </trim>
         where id = #{id}

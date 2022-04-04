@@ -2,6 +2,8 @@ package com.zhy.hr.recruit.service.impl;
 
 import java.util.List;
 
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.zhy.hr.recruit.mapper.JobPostMapper;
@@ -49,6 +51,8 @@ public class JobPostServiceImpl implements IJobPostService {
      */
     @Override
     public int insertJobPost(JobPost jobPost) {
+        jobPost.setPublishTime(System.currentTimeMillis());
+        jobPost.setId(IdUtil.simpleUUID().substring(0, 19));
         return jobPostMapper.insertJobPost(jobPost);
     }
 
