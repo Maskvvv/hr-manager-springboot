@@ -13,6 +13,7 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @SpringBootTest
@@ -64,7 +65,7 @@ class HrManagerApplicationTests {
         context.setVariable("name", "张三");
         context.setVariable("posName", "研发部");
         context.setVariable("joblevelName", "普通员工");
-        context.setVariable("departmentName","研发部");
+        context.setVariable("departmentName", "研发部");
         String mail = templateEngine.process("mail", context);
         helper.setText(mail, true);
         javaMailSender.send(msg);
@@ -75,5 +76,14 @@ class HrManagerApplicationTests {
     void rabbitMQ() {
         rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, "8");
     }
+
+    @Test
+    void dateTest() {
+        Date date = new Date(1532058425000L);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = dateFormat.format(new Date(1532058425000L));
+        System.out.println(date);
+    }
+
 
 }

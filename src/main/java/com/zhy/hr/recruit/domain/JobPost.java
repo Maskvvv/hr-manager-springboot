@@ -1,12 +1,12 @@
 package com.zhy.hr.recruit.domain;
 
+import cn.hutool.json.JSONUtil;
 import com.zhy.common.annotation.Excel;
 import com.zhy.common.core.domain.BaseEntity;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -78,6 +78,8 @@ public class JobPost extends BaseEntity {
     @Excel(name = "职位名称")
     private Long publishTime;
 
+    private String publishDate;
+
     /**
      * $column.columnComment
      */
@@ -134,156 +136,21 @@ public class JobPost extends BaseEntity {
 
     private JobPostParam jobPostParam;
 
-    public void setId(String id) {
-        this.id = id;
+    public RecruitType getRecruit() {
+        this.setRecruit(JSONUtil.toBean(this.getRecruitType(), RecruitType.class));
+        return recruit;
     }
 
-    public String getId() {
-        return id;
+    public void setRecruit(RecruitType recruit) {
+        this.recruit = recruit;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getPublishDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return this.publishTime == null ? "" : dateFormat.format(new Date(this.publishTime));
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-    }
-
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setRequirement(String requirement) {
-        this.requirement = requirement;
-    }
-
-    public String getRequirement() {
-        return requirement;
-    }
-
-
-    public void setRecruitType(String recruitType) {
-        this.recruitType = recruitType;
-    }
-
-    public String getRecruitType() {
-        return recruitType;
-    }
-
-    public void setPublishTime(Long publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    public Long getPublishTime() {
-        return publishTime;
-    }
-
-    public void setDeliveryInfoId(String deliveryInfoId) {
-        this.deliveryInfoId = deliveryInfoId;
-    }
-
-    public String getDeliveryInfoId() {
-        return deliveryInfoId;
-    }
-
-    public void setChannelOnlineStatus(Long channelOnlineStatus) {
-        this.channelOnlineStatus = channelOnlineStatus;
-    }
-
-    public Long getChannelOnlineStatus() {
-        return channelOnlineStatus;
-    }
-
-    public void setJobHotFlag(Long jobHotFlag) {
-        this.jobHotFlag = jobHotFlag;
-    }
-
-    public Long getJobHotFlag() {
-        return jobHotFlag;
-    }
-
-    public void setJobSubject(String jobSubject) {
-        this.jobSubject = jobSubject;
-    }
-
-    public String getJobSubject() {
-        return jobSubject;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public String getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setJobProcessId(String jobProcessId) {
-        this.jobProcessId = jobProcessId;
-    }
-
-    public String getJobProcessId() {
-        return jobProcessId;
-    }
-
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-
-    public String getJobId() {
-        return jobId;
-    }
-
-    public void setCityList(String cityList) {
-        this.cityList = cityList;
-    }
-
-    public String getCityList() {
-        return cityList;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("title", getTitle())
-                .append("subTitle", getSubTitle())
-                .append("description", getDescription())
-                .append("requirement", getRequirement())
-                .append("jobCategory", getJobCategory())
-                .append("cityInfo", getCityInfo())
-                .append("recruitType", getRecruitType())
-                .append("publishTime", getPublishTime())
-                .append("deliveryInfoId", getDeliveryInfoId())
-                .append("channelOnlineStatus", getChannelOnlineStatus())
-                .append("jobHotFlag", getJobHotFlag())
-                .append("jobSubject", getJobSubject())
-                .append("code", getCode())
-                .append("departmentId", getDepartmentId())
-                .append("jobProcessId", getJobProcessId())
-                .append("jobId", getJobId())
-                .append("cityList", getCityList())
-                .toString();
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
     }
 }

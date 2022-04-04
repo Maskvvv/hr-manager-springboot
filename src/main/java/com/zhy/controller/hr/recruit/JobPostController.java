@@ -77,7 +77,7 @@ public class JobPostController extends BaseController {
     public Map<String, Object> jobInfo(@PathVariable("id") String id) {
         Map<String, Object> map = new HashMap<>();
         JobPost jobPost = jobPostService.selectJobPostById(id);
-        jobPost.setRecruit(JSONUtil.toBean(jobPost.getRecruitType(), RecruitType.class));
+        //jobPost.setRecruit(JSONUtil.toBean(jobPost.getRecruitType(), RecruitType.class));
         map.put("job_post_detail", jobPost);
         return map;
     }
