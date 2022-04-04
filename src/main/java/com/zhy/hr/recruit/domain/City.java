@@ -18,8 +18,9 @@ public class City extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * $column.columnComment
+     * code
      */
+    @Excel(name = "code")
     private String code;
 
     /**
@@ -29,21 +30,20 @@ public class City extends BaseEntity {
     private String name;
 
     /**
-     * $column.columnComment
+     * 英文名
      */
-    @Excel(name = "名称")
+    @Excel(name = "英文名")
     private String enName;
 
     /**
      * 类型
      */
-    @Excel(name = "类型")
     private Long locationType;
 
     /**
-     * $column.columnComment
+     * i18nName
      */
-    @Excel(name = "类型")
+    @Excel(name = "i18nName")
     private String i18nName;
 
     /**
@@ -55,5 +55,6 @@ public class City extends BaseEntity {
     /**
      * 工作数量
      */
+    @Excel(name = "工作数量")
     private Integer jobCount;
 }
