@@ -2,6 +2,7 @@ package com.zhy.hr.recruit.service.impl;
 
 import java.util.List;
 
+import cn.hutool.core.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.zhy.hr.recruit.mapper.JobTypeMapper;
@@ -49,6 +50,7 @@ public class JobTypeServiceImpl implements IJobTypeService {
      */
     @Override
     public int insertJobType(JobType jobType) {
+        jobType.setId(IdUtil.simpleUUID().substring(0, 19));
         return jobTypeMapper.insertJobType(jobType);
     }
 
