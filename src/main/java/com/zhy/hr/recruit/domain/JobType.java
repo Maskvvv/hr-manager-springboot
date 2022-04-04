@@ -37,7 +37,7 @@ public class JobType extends BaseEntity {
     private String enName;
 
     /**
-     * $column.columnComment
+     * i18nName
      */
     @Excel(name = "英文名")
     private String i18nName;
@@ -45,63 +45,15 @@ public class JobType extends BaseEntity {
     /**
      * 等级
      */
-    @Excel(name = "等级")
     private Long depth;
 
     /**
      * 父节点
      */
-    @Excel(name = "父节点")
     private String parent;
 
     private List<JobType> children;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setEnName(String enName) {
-        this.enName = enName;
-    }
-
-    public String getEnName() {
-        return enName;
-    }
-
-    public void setI18nName(String i18nName) {
-        this.i18nName = i18nName;
-    }
-
-    public String getI18nName() {
-        return i18nName;
-    }
-
-    public void setDepth(Long depth) {
-        this.depth = depth;
-    }
-
-    public Long getDepth() {
-        return depth;
-    }
-
-    public void setParent(String parent) {
-        this.parent = parent;
-    }
-
-    public String getParent() {
-        return parent;
-    }
-
+    @Excel(name = "工作数量")
+    private Integer jobCount;
 }

@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="i18nName"    column="i18n_name"    />
         <result property="depth"    column="depth"    />
         <result property="parent"    column="parent"    />
+        <result property="jobCount"    column="job_count"    />
     </resultMap>
 
     <sql id="selectJobTypeVo">
@@ -18,14 +19,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectJobTypeList" resultMap="JobTypeResult">
-        <include refid="selectJobTypeVo"/>
+        select jt.id,
+        jt.name,
+        jt.en_name,
+        jt.i18n_name,
+        jt.depth,
+        jt.parent,
+        (select count(*) from job_post jp where jt.id = jp.job_category) AS job_count
+        from job_type jt
+
         <where>
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
-            <if test="i18nName != null  and i18nName != ''"> and i18n_name like concat('%', #{i18nName}, '%')</if>
-            <if test="depth != null "> and depth = #{depth}</if>
-            <if test="parent != null  and parent != ''"> and parent = #{parent}</if>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="enName != null  and enName != ''">
+                and en_name like concat('%', #{enName}, '%')
+            </if>
+            <if test="i18nName != null  and i18nName != ''">
+                and i18n_name like concat('%', #{i18nName}, '%')
+            </if>
+            <if test="depth != null">
+                and depth = #{depth}
+            </if>
+            <if test="parent != null  and parent != ''">
+                and parent = #{parent}
+            </if>
         </where>
+        order by job_count desc
     </select>
 
     <select id="selectJobTypeById" parameterType="String" resultMap="JobTypeResult">
