@@ -31,107 +31,98 @@ public class JobPost extends BaseEntity {
     private String title;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String subTitle;
 
     /**
-     * $column.columnComment
+     * 职位描述
      */
-    @Excel(name = "职位名称")
+    @Excel(name = "职位描述")
     private String description;
 
     /**
-     * $column.columnComment
+     * 职位要求
      */
-    @Excel(name = "职位名称")
+    @Excel(name = "职位要求")
     private String requirement;
 
     /**
      * 职位类型
      */
-    @Excel(name = "职位名称")
     private String jobCategoryId;
 
+    @Excel(name = "职位类型", targetAttr = "name")
     private JobType jobCategory;
 
     /**
-     * $column.columnComment
+     * 城市信息
      */
-    @Excel(name = "职位名称")
     private String cityInfoId;
 
+    @Excel(name = "职位名称", targetAttr = "name")
     private City cityInfo;
 
     /**
-     * $column.columnComment
+     * 招聘类型
      */
-    @Excel(name = "职位名称")
     private String recruitType;
 
+    @Excel(name = "职位名称")
     private RecruitType recruit;
 
     /**
-     * $column.columnComment
+     * 发布时间
      */
-    @Excel(name = "职位名称")
+
     private Long publishTime;
 
+    @Excel(name = "发布时间")
     private String publishDate;
 
     /**
-     * $column.columnComment
+     * 投递信息
      */
-    @Excel(name = "职位名称")
     private String deliveryInfoId;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private Long channelOnlineStatus;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private Long jobHotFlag;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String jobSubject;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String code;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String departmentId;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String jobProcessId;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String jobId;
 
     /**
-     * $column.columnComment
+     *
      */
-    @Excel(name = "职位名称")
     private String cityList;
 
     private JobPostParam jobPostParam;
