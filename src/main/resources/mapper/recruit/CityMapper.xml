@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="locationType"    column="location_type"    />
         <result property="i18nName"    column="i18n_name"    />
         <result property="pyName"    column="py_name"    />
+        <result property="jobCount"    column="job_count"    />
     </resultMap>
 
     <sql id="selectCityVo">
