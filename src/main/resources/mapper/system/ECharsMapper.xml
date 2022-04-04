@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.system.mapper.ECharsMapper">
+    <resultMap type="com.zhy.system.domain.EChars" id="echarsResultMap">
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+    </resultMap>
+
+    <select id="getJobCityData" resultMap="echarsResultMap">
+        (select name,
+                (select count(*) from job_post jp where jp.city_info = city.code) AS value
+         from city
+         order by value desc
+         limit 10)
+        union
+        (select '其他城市' AS name, count(1) AS value from job_post)
+    </select>
+</mapper>

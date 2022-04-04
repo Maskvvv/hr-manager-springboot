@@ -106,7 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/profile/**",
                         "/recruit/**",
-                        "/ws/**"
+                        "/ws/**",
+                        "/echars"
                 ).permitAll()
                 .antMatchers(
                         "/recruit/**"
