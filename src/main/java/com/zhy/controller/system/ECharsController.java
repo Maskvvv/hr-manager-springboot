@@ -29,4 +29,11 @@ public class ECharsController extends BaseController {
         return eCharsService.getJobCityData();
     }
 
+    /**
+     * 获取职位类别工作统计数据
+     */
+    @GetMapping("/job/category")
+    public List<EChars> getJobCategoryData() {
+        return eCharsService.getJobCategoryData();
+    }
 }

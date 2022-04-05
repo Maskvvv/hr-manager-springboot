@@ -36,4 +36,25 @@ public class ECharsServiceImpl{
         return jobCityData;
     }
 
+    /**
+     * 获取职位城市工作统计数据
+     * [
+     *               { value: 1048, name: 'Search Engine' },
+     *               { value: 735, name: 'Direct' },
+     *               { value: 580, name: 'Email' },
+     *               { value: 484, name: 'Union Ads' },
+     *               { value: 300, name: 'Video Ads' }
+     *             ]
+     */
+    public List<EChars> getJobCategoryData() {
+        List<EChars> jobCityData = eCharsMapper.getJobCategoryData();
+        EChars other = jobCityData.get(jobCityData.size() - 1);
+        int otherValue = other.getValue();
+        for (int i = 0; i < jobCityData.size() - 1; i++) {
+            otherValue -= jobCityData.get(i).getValue();
+        }
+        other.setValue(Math.max(otherValue, 0));
+        return jobCityData;
+    }
+
 }

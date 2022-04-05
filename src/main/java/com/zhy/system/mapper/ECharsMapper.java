@@ -15,4 +15,9 @@ public interface ECharsMapper {
      */
     List<EChars> getJobCityData();
 
+    /**
+     * 获取职位城市工作统计数据
+     */
+    List<EChars> getJobCategoryData();
+
 }

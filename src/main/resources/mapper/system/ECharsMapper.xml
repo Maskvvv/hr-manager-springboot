@@ -17,4 +17,14 @@
         union
         (select '其他城市' AS name, count(1) AS value from job_post)
     </select>
+
+    <select id="getJobCategoryData" resultMap="echarsResultMap">
+        (select jt.name,
+                (select count(*) from job_post jp where jt.id = jp.job_category) AS value
+         from job_type jt
+         order by value desc
+         limit 30)
+        union
+        (select '其他类型' AS name, count(1) AS value from job_post)
+    </select>
 </mapper>
