@@ -30,7 +30,9 @@ public class DayActiveUserServiceImpl implements DayActiveUserService {
     public void insertDayActiveUser(LoginUser loginUser) {
         DayActiveUser dayActiveUser = new DayActiveUser();
         dayActiveUser.setId(IdUtil.simpleUUID());
-        dayActiveUser.setUserId(loginUser.getUserId());
+        if (loginUser != null) {
+            dayActiveUser.setUserId(loginUser.getUserId());
+        }
         dayActiveUser.setCreatTime(System.currentTimeMillis());
         dayActiveUserMapper.insertDayActiveUser(dayActiveUser);
     }

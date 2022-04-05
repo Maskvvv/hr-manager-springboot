@@ -2,6 +2,7 @@ package com.zhy.controller.system;
 
 import com.zhy.common.core.controller.BaseController;
 import com.zhy.system.domain.EChars;
+import com.zhy.system.domain.LineChars;
 import com.zhy.system.service.impl.ECharsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,5 +36,13 @@ public class ECharsController extends BaseController {
     @GetMapping("/job/category")
     public List<EChars> getJobCategoryData() {
         return eCharsService.getJobCategoryData();
+    }
+
+    /**
+     * 获取日活数据
+     */
+    @GetMapping("/day/active/user")
+    public LineChars getDayActiveUserData() {
+        return eCharsService.getDayActiveUserData();
     }
 }

@@ -20,4 +20,9 @@ public interface ECharsMapper {
      */
     List<EChars> getJobCategoryData();
 
+    /**
+     * 获取日活数据
+     */
+    List<EChars> getDayActiveUserData();
+
 }

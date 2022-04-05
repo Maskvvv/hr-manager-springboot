@@ -27,4 +27,50 @@
         union
         (select '其他类型' AS name, count(1) AS value from job_post)
     </select>
+
+    <select id="getDayActiveUserData" resultMap="echarsResultMap">
+        select value_list value, name_list name from
+        ((select count(*)                                                                     as value_list,
+                WEEKDAY(date_add(CURRENT_DATE(), INTERVAL - 6 DAY)) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL - 6 DAY))) * 1000 AND
+                       unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL -5 DAY))) * 1000)
+
+        union
+        (select count(*)                                                                     as value_list,
+                WEEKDAY(date_add(CURRENT_DATE(), INTERVAL - 5 DAY)) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL - 5 DAY))) * 1000 AND
+                       unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL -4 DAY))) * 1000)
+        union
+        (select count(*)                                                                     as value_list,
+                WEEKDAY(date_add(CURRENT_DATE(), INTERVAL - 4 DAY)) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL - 4 DAY))) * 1000 AND
+                       unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL -3 DAY))) * 1000)
+        union
+        (select count(*)                                                                     as value_list,
+                WEEKDAY(date_add(CURRENT_DATE(), INTERVAL - 3 DAY)) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL - 3 DAY))) * 1000 AND
+                       unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL -2 DAY))) * 1000)
+        union
+        (select count(*)                                                                     as value_list,
+                WEEKDAY(date_add(CURRENT_DATE(), INTERVAL - 2 DAY)) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL - 2 DAY))) * 1000 AND
+                       unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL -1 DAY))) * 1000)
+        union
+        (select count(*)                                                                     as value_list,
+                WEEKDAY(date_add(CURRENT_DATE(), INTERVAL - 1 DAY)) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL - 1 DAY))) * 1000 AND
+                       unix_timestamp(TIMESTAMP(CURRENT_DATE())) * 1000)
+        union
+        (select count(*)                                                                     as value_list,
+                WEEKDAY(CURRENT_DATE()) + 1 as name_list
+         from day_active_user as dau
+         where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(CURRENT_DATE())) * 1000 AND
+                       unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL 1 DAY))) * 1000)) dau
+    </select>
 </mapper>
