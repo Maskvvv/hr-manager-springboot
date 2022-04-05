@@ -8,6 +8,11 @@ package com.zhy.common.enums;
  */
 public enum BusinessType {
     /**
+     * 日活 Day Active User
+     */
+    DAU,
+
+    /**
      * 其它
      */
     OTHER,

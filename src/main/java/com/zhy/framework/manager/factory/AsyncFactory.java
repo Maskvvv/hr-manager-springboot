@@ -1,6 +1,7 @@
 package com.zhy.framework.manager.factory;
 
 import com.zhy.common.constant.Constants;
+import com.zhy.common.core.domain.model.LoginUser;
 import com.zhy.common.utils.LogUtils;
 import com.zhy.common.utils.ServletUtils;
 import com.zhy.common.utils.StringUtils;
@@ -9,8 +10,10 @@ import com.zhy.common.utils.ip.IpUtils;
 import com.zhy.common.utils.spring.SpringUtils;
 import com.zhy.system.domain.SysLogininfor;
 import com.zhy.system.domain.SysOperLog;
+import com.zhy.system.service.DayActiveUserService;
 import com.zhy.system.service.ISysLogininforService;
 import com.zhy.system.service.ISysOperLogService;
+import com.zhy.system.service.impl.DayActiveUserServiceImpl;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,4 +93,17 @@ public class AsyncFactory {
             }
         };
     }
+
+    /**
+     * 日活
+     */
+    public static TimerTask insertDayActiveUser(final LoginUser loginUser) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                SpringUtils.getBean(DayActiveUserService.class).insertDayActiveUser(loginUser);
+            }
+        };
+    }
 }
+

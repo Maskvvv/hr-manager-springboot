@@ -3,6 +3,8 @@ package com.zhy.framework.security.filter;
 import com.zhy.common.core.domain.model.LoginUser;
 import com.zhy.common.utils.SecurityUtils;
 import com.zhy.common.utils.StringUtils;
+import com.zhy.framework.manager.AsyncManager;
+import com.zhy.framework.manager.factory.AsyncFactory;
 import com.zhy.framework.web.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +33,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         LoginUser loginUser = tokenService.getLoginUser(request);
+        AsyncManager.me().execute(AsyncFactory.insertDayActiveUser(loginUser));
         if (StringUtils.isNotNull(loginUser) && StringUtils.isNull(SecurityUtils.getAuthentication())) {
             tokenService.verifyToken(loginUser);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
