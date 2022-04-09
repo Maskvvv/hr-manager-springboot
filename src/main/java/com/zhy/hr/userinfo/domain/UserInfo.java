@@ -5,7 +5,10 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhy.common.core.domain.entity.SysDept;
 import com.zhy.common.core.domain.entity.SysUser;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.zhy.common.annotation.Excel;
@@ -18,6 +21,9 @@ import com.zhy.common.core.domain.BaseEntity;
  * @date 2022-01-27
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

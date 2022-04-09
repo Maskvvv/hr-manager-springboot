@@ -4,7 +4,11 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.extra.mail.MailUtil;
+import com.zhy.common.core.domain.entity.SysUser;
 import com.zhy.framework.rabbitmq.config.RabbitMQConfig;
+import com.zhy.hr.userinfo.domain.UserInfo;
+import com.zhy.hr.userinfo.service.impl.UserInfoServiceImpl;
+import com.zhy.system.mapper.SysUserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,10 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class HrManagerApplicationTests {
@@ -35,26 +42,53 @@ class HrManagerApplicationTests {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private UserInfoServiceImpl infoService;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
     @Test
     void generateUsername() {
 
         String username = "zhy";
 
-        String[] zhies = username.split("zhy1");
-        System.out.println(zhies.length);
-        for (String zhy : zhies) {
-            System.out.println(zhy);
+        String[] names = new String[]{"zhy", "zhy1", "zhy2", "zhy4"};
+
+        int i = 0;
+        int j = names.length - 1;
+
+        while (i <= j) {
+            int middle = (j + i) / 2;
+            String[] nameArray = names[middle].split("zhy");
+            int namesMiddle = nameArray.length > 0 ? Integer.parseInt(nameArray[1]) : 0;
+
+            if (namesMiddle == middle) {
+                i = middle + 1;
+            } else {
+                j = middle - 1;
+            }
         }
 
-        String username1 = "zhy12";
+        System.out.println(i);
 
-        String[] zhies1 = username1.split("zhy");
-        System.out.println(zhies1.length);
-
-        for (String s : zhies1) {
-            System.out.println(s);
-        }
+        //for (String name : names) {
+        //    System.out.println(Arrays.toString(name.split("zhy")));
+        //    System.out.println(name.split("zhy").length);
+        //}
     }
+    @Test
+    void generateUsername1() {
+        System.out.println(infoService.generateUsername(UserInfo.builder().userInfoName("周宏寅").build()));
+        //String[] names = sysUserMapper.selectUserList(SysUser.builder().userName("zhouhongyin").build()).stream().map(SysUser::getUserName).toArray(String[]::new);
+        //
+        //List<String> zhouhongyin = sysUserMapper.selectUserList(SysUser.builder().userName("zhouhongyin").build()).stream().map(SysUser::getUserName).collect(Collectors.toList());
+        //zhouhongyin.forEach(System.out::println);
+        //System.out.println("-------------------------");
+        //Arrays.stream(names).forEach(System.out::println);
+
+    }
+
 
     @Test
     void sendMail() throws MessagingException {

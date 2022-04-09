@@ -52,7 +52,7 @@ public class UserInfoReceiver {
         try {
             long userId = Long.parseLong(new String(message.getBody()));
             UserInfo userInfo = userInfoService.selectUserInfoByUserInfoId(userId);
-            log.info("邮件发送的用户：" + userInfo.toString());
+            //log.info("邮件发送的用户：" + userInfo.toString());
 
             DateFormat dateFormat = new SimpleDateFormat("yy 年 MM 月 dd");
             DateFormat yy = new SimpleDateFormat("yyyy");
@@ -73,7 +73,7 @@ public class UserInfoReceiver {
             context.setVariable("dd", dd.format(userInfo.getBeginDate()));
 
             String mail = templateEngine.process("mail1", context);
-            log.info("邮件内容：" + mail);
+            //log.info("邮件内容：" + mail);
 
             MailUtil.send(userInfo.getSysUser().getEmail(), "未来科技有限公司入职邀请", mail, true);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);

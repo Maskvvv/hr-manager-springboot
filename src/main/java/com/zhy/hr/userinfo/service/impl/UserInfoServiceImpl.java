@@ -29,6 +29,7 @@ import com.zhy.hr.userinfo.mapper.PoliticsStatusMapper;
 import com.zhy.hr.userinfo.mapper.SalaryMapper;
 import com.zhy.system.mapper.SysDeptMapper;
 import com.zhy.system.mapper.SysUserMapper;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -162,37 +163,29 @@ public class UserInfoServiceImpl implements IUserInfoService {
     /**
      * 用户名生成逻辑
      */
-    private String generateUsername(UserInfo userInfo) {
+    public String generateUsername(UserInfo userInfo) {
         String username = PinyinUtil.getPinyin(userInfo.getUserInfoName(), "");
-        List<String> usernameList = sysUserMapper.selectUserList(SysUser.builder().userName(username).build()).stream().map(SysUser::getUserName).collect(Collectors.toList());
+        String[] names = sysUserMapper.selectUserList(SysUser.builder().userName(username).build()).stream().map(SysUser::getUserName).toArray(String[]::new);
         // // TODO: 2022/2/22 剑指 Offer 53 - II. 0～n-1中缺失的数字
 
-        class Solution {
+        if (!ObjectUtils.isEmpty(names)) {
 
-            public int missingNumber(int[] nums) {
-                int i = 0;
-                int j = nums.length - 1;
+            int i = 0;
+            int j = names.length - 1;
 
-                while (i <= j) {
-                    int middle = (j + i) / 2;
-                    if (nums[middle] == middle) {
-                        i = middle + 1;
-                    } else {
-                        j = middle - 1;
-                    }
+            while (i <= j) {
+                int middle = (j + i) / 2;
+                String[] nameArray = names[middle].split(username);
+                int namesMiddle = nameArray.length > 0 ? Integer.parseInt(nameArray[1]) : 0;
+
+                if (namesMiddle == middle) {
+                    i = middle + 1;
+                } else {
+                    j = middle - 1;
                 }
-                return i;
             }
-        }
+            username = i == 0 ? username : (username + i);
 
-        if (!CollectionUtils.isEmpty(usernameList)) {
-            String preUsername = usernameList.get(usernameList.size() - 1);
-            String[] usernameSuffix = preUsername.split(username);
-            if (usernameSuffix.length > 1) {
-                username = username + (Integer.parseInt(usernameSuffix[1]) + 1);
-            } else {
-                username = username + 1;
-            }
         }
         return username;
     }
