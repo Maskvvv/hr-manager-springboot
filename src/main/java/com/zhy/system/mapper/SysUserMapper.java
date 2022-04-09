@@ -65,7 +65,7 @@ public interface SysUserMapper {
      * @param user 用户信息
      * @return 结果
      */
-    public int updateUser(SysUser user);
+    int updateUser(SysUser user);
 
     /**
      * 修改用户头像
@@ -92,6 +92,7 @@ public interface SysUserMapper {
      * @return 结果
      */
     public int deleteUserById(Long userId);
+    public int realDeleteUserById(Long userId);
 
     /**
      * 批量删除用户信息
@@ -100,6 +101,8 @@ public interface SysUserMapper {
      * @return 结果
      */
     public int deleteUserByIds(Long[] userIds);
+
+    public int realDeleteUserByIds(Long[] userIds);
 
     /**
      * 校验用户名称是否唯一

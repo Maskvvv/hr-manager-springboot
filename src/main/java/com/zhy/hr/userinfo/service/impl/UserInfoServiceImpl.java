@@ -156,8 +156,14 @@ public class UserInfoServiceImpl implements IUserInfoService {
     @Transactional(rollbackFor = Exception.class)
     public int deleteUserInfoByUserInfoId(Long userInfoId) {
         UserInfo userInfo = userInfoMapper.selectUserInfoByUserInfoId(userInfoId);
-        sysUserMapper.deleteUserById(userInfo.getUserId());
+        // 删除系统用户
+        sysUserMapper.realDeleteUserById(userInfo.getUserId());
         return userInfoMapper.deleteUserInfoByUserInfoId(userInfoId);
+    }
+
+    @Override
+    public int deleteUserInfoByUserIds(Long[] userIds) {
+        return userInfoMapper.deleteUserInfoByUserIds(userIds);
     }
 
     /**

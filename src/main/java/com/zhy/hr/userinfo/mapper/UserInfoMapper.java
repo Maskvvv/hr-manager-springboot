@@ -51,6 +51,9 @@ public interface UserInfoMapper {
      */
     public int deleteUserInfoByUserInfoId(Long userInfoId);
 
+    public int deleteUserInfoByUserIds(Long[] userId);
+
+
     /**
      * 批量删除用户详细信息
      *

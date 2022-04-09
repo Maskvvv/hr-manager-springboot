@@ -434,6 +434,16 @@
         where user_info_id = #{userInfoId}
     </delete>
 
+    <delete id="deleteUserInfoByUserIds" parameterType="Long">
+        delete
+        from user_info
+        where user_id in
+        <foreach collection="array" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </delete>
+
     <delete id="deleteUserInfoByUserInfoIds" parameterType="String">
         delete
         from user_info where user_info_id in

@@ -65,6 +65,13 @@ public interface IUserInfoService {
     public int deleteUserInfoByUserInfoId(Long userInfoId);
 
     /**
+     * 根据用户id删除用户信息
+     * @param userIds
+     * @return
+     */
+    public int deleteUserInfoByUserIds(Long[] userIds);
+
+    /**
      * 导入模板
      */
     AjaxResult importTemplate() throws IOException;

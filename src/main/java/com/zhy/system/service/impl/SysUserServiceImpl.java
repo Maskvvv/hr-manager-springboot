@@ -8,6 +8,7 @@ import com.zhy.common.exception.ServiceException;
 import com.zhy.common.utils.SecurityUtils;
 import com.zhy.common.utils.StringUtils;
 import com.zhy.common.utils.spring.SpringUtils;
+import com.zhy.hr.userinfo.service.IUserInfoService;
 import com.zhy.system.domain.SysPost;
 import com.zhy.system.domain.SysUserPost;
 import com.zhy.system.domain.SysUserRole;
@@ -53,6 +54,9 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     private ISysConfigService configService;
+
+    @Autowired
+    private IUserInfoService userInfoService;
 
     /**
      * 根据条件分页查询用户列表
@@ -444,6 +448,8 @@ public class SysUserServiceImpl implements ISysUserService {
         userRoleMapper.deleteUserRole(userIds);
         // 删除用户与岗位关联
         userPostMapper.deleteUserPost(userIds);
+        // 删除用户信息
+        userInfoService.deleteUserInfoByUserIds(userIds);
         return userMapper.deleteUserByIds(userIds);
     }
 
