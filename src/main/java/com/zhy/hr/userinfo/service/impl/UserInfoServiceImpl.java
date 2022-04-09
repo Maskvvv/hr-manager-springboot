@@ -118,7 +118,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
         int flag = userInfoMapper.insertUserInfo(userInfo);
 
         // 发送邮件
-        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, userInfo.getUserInfoId());
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, userInfo.getUserInfoId().toString());
 
         return flag;
     }

@@ -1,7 +1,9 @@
 package com.zhy;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.extra.mail.MailUtil;
 import com.zhy.framework.rabbitmq.config.RabbitMQConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -76,7 +78,7 @@ class HrManagerApplicationTests {
 
     @Test
     void rabbitMQ() {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, "8");
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, "12");
     }
 
     @Test
@@ -93,6 +95,24 @@ class HrManagerApplicationTests {
 
         System.out.println(UUID.randomUUID().toString());
         System.out.println(IdUtil.simpleUUID());
+    }
+
+    @Test
+    void mailTest() {
+        Context context = new Context();
+        context.setVariable("userInfoName", "userInfo.getUserInfoName()");
+        context.setVariable("userName", "userInfo.getSysUser().getUserName()");
+        context.setVariable("dept", "userInfo.getSysDept().getDeptName()");
+        context.setVariable("leader", "userInfo.getSysDept().getLeader()");
+        context.setVariable("basicSalary", "userInfo.getSalary().getBasicSalary()");
+        context.setVariable("bonus", "userInfo.getSalary().getBonus()");
+        context.setVariable("lunchSalary", "userInfo.getSalary().getLunchSalary()");
+        context.setVariable("trafficSalary", "userInfo.getSalary().getTrafficSalary()");
+
+        String mail1 = templateEngine.process("mail1", context);
+
+        MailUtil.send("2668989410@qq.com", "入职邀请", mail1, true);
+
     }
 
 

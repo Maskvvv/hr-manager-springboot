@@ -132,6 +132,7 @@
     <sql id="sysDeptColumn">
         ,sd.dept_name AS sd_dept_name
         ,sd.dept_id AS sd_dept_id
+        ,sd.leader AS sd_leader
     </sql>
 
     <select id="selectUserInfoList" resultMap="UserInfoResult">

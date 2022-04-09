@@ -16,7 +16,9 @@ public class RabbitMQConfig {
     public static final String TOPIC_EXCHANGE = "hrTopicExchange";
 
     public static final String SENDMAIL_CREAT_USERINFO_QUEUE = "sendMailCreatUserInfoQueue";
+    public static final String SENDMAIL_CREAT_USERINFO_QUEUE_TEST = "sendMailCreatUserInfoQueueTest";
     public static final String SENDMAIL_CREAT_USERINFO_KEY = "sendMail.creat.userInfo";
+    public static final String SENDMAIL_CREAT_USERINFO_KEY_TEST = "sendMail.creat.Test";
 
 
     /**
@@ -41,6 +43,22 @@ public class RabbitMQConfig {
     @Bean
     public Binding sendMailCreatUserInfoBinding() {
         return BindingBuilder.bind(sendMailCreatUserInfoQueue()).to(topicExchange()).with(SENDMAIL_CREAT_USERINFO_KEY);
+    }
+
+    /**
+     * 创建发送入职信息队列
+     */
+    @Bean
+    public Queue sendMailTest() {
+        return new Queue(SENDMAIL_CREAT_USERINFO_QUEUE_TEST, true, false, false);
+    }
+
+    /**
+     * 绑定交换机和队列
+     */
+    @Bean
+    public Binding sendMailTestoBinding() {
+        return BindingBuilder.bind(sendMailTest()).to(topicExchange()).with(SENDMAIL_CREAT_USERINFO_KEY_TEST);
     }
 
 
