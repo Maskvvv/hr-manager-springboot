@@ -450,7 +450,7 @@ public class SysUserServiceImpl implements ISysUserService {
         userPostMapper.deleteUserPost(userIds);
         // 删除用户信息
         userInfoService.deleteUserInfoByUserIds(userIds);
-        return userMapper.deleteUserByIds(userIds);
+        return userMapper.realDeleteUserByIds(userIds);
     }
 
     /**

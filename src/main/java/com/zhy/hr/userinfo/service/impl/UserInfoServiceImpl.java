@@ -171,8 +171,8 @@ public class UserInfoServiceImpl implements IUserInfoService {
      */
     public String generateUsername(UserInfo userInfo) {
         String username = PinyinUtil.getPinyin(userInfo.getUserInfoName(), "");
-        String[] names = sysUserMapper.selectUserList(SysUser.builder().userName(username).build()).stream().map(SysUser::getUserName).toArray(String[]::new);
-        // // TODO: 2022/2/22 剑指 Offer 53 - II. 0～n-1中缺失的数字
+        String[] names = sysUserMapper.selectUserList(SysUser.builder().userName(username).build())
+                .stream().map(SysUser::getUserName).toArray(String[]::new);
 
         if (!ObjectUtils.isEmpty(names)) {
 
