@@ -13,6 +13,7 @@ import com.zhy.common.utils.StringUtils;
 import com.zhy.common.utils.spring.SpringUtils;
 import com.zhy.system.mapper.SysDeptMapper;
 import com.zhy.system.mapper.SysRoleMapper;
+import com.zhy.system.mapper.SysUserMapper;
 import com.zhy.system.service.ISysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
 
     @Autowired
     private SysRoleMapper roleMapper;
+
+    @Autowired
+    private SysUserMapper userMapper;
 
     /**
      * 查询部门管理数据
@@ -191,6 +195,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
             throw new ServiceException("部门停用，不允许新增");
         }
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
+        dept.setLeader(userMapper.selectUserById(dept.getUserId()).getNickName());
+        dept.setEmail(userMapper.selectUserById(dept.getUserId()).getEmail());
+        dept.setPhone(userMapper.selectUserById(dept.getUserId()).getPhonenumber());
         return deptMapper.insertDept(dept);
     }
 
@@ -210,6 +217,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
             dept.setAncestors(newAncestors);
             updateDeptChildren(dept.getDeptId(), newAncestors, oldAncestors);
         }
+        dept.setLeader(userMapper.selectUserById(dept.getUserId()).getNickName());
+        dept.setEmail(userMapper.selectUserById(dept.getUserId()).getEmail());
+        dept.setPhone(userMapper.selectUserById(dept.getUserId()).getPhonenumber());
         int result = deptMapper.updateDept(dept);
         if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()) && StringUtils.isNotEmpty(dept.getAncestors())
                 && !StringUtils.equals("0", dept.getAncestors())) {

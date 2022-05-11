@@ -89,6 +89,8 @@ spring:
     listener:
       simple:
         acknowledge-mode: manual
+  thymeleaf:
+    cache: false
 
 #  mail:
 #    host: smtp.qq.com

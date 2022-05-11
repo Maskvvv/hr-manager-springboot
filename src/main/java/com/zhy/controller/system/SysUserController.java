@@ -59,6 +59,14 @@ public class SysUserController extends BaseController {
         return getDataTable(list);
     }
 
+    /**
+     * 获取用户列表(部门管理选择部门负责人用)
+     */
+    @GetMapping("/dept/users")
+    public List<SysUser> getDeptUsers(SysUser user) {
+        return userService.selectUserList(user);
+    }
+
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:user:export')")
     @GetMapping("/export")

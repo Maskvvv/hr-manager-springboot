@@ -7,6 +7,7 @@ import cn.hutool.extra.mail.MailUtil;
 import com.zhy.common.core.domain.entity.SysUser;
 import com.zhy.framework.rabbitmq.config.RabbitMQConfig;
 import com.zhy.hr.userinfo.domain.UserInfo;
+import com.zhy.hr.userinfo.mapper.UserInfoMapper;
 import com.zhy.hr.userinfo.service.impl.UserInfoServiceImpl;
 import com.zhy.system.mapper.SysUserMapper;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
