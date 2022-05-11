@@ -324,4 +324,9 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="countJobPost" resultType="int">
+        select count(*)
+        from job_post;
+    </select>
 </mapper>

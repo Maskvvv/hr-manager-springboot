@@ -58,4 +58,6 @@ public interface JobPostMapper {
      * @return 结果
      */
     public int deleteJobPostByIds(String[] ids);
+
+    Integer countJobPost();
 }

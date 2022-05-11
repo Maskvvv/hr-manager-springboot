@@ -11,6 +11,8 @@ import java.util.List;
  * @author zhy
  */
 public interface SysDeptMapper {
+    Integer countDept();
+
     /**
      * 查询部门管理数据
      *

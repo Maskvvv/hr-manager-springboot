@@ -1,8 +1,12 @@
 package com.zhy.system.service.impl;
 
+import com.zhy.hr.recruit.domain.JobPost;
+import com.zhy.hr.recruit.mapper.JobPostMapper;
 import com.zhy.system.domain.EChars;
 import com.zhy.system.domain.LineChars;
 import com.zhy.system.mapper.ECharsMapper;
+import com.zhy.system.mapper.SysDeptMapper;
+import com.zhy.system.mapper.SysUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,15 @@ public class ECharsServiceImpl{
 
     @Autowired
     private ECharsMapper eCharsMapper;
+
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private JobPostMapper jobPostMapper;
 
 
     /**
@@ -77,5 +90,18 @@ public class ECharsServiceImpl{
         return lineChars;
 
     }
+
+    /**
+     * 今日日活、系统用户数、部门数、职位数量
+     */
+    public List<Integer> getThreeData() {
+        List<Integer> dataList = new ArrayList<>(4);
+        dataList.add(eCharsMapper.countTodayActiveUser());
+        dataList.add(sysUserMapper.countUser());
+        dataList.add(sysDeptMapper.countDept());
+        dataList.add(jobPostMapper.countJobPost());
+        return dataList;
+    }
+
 
 }

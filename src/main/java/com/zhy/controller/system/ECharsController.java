@@ -45,4 +45,12 @@ public class ECharsController extends BaseController {
     public LineChars getDayActiveUserData() {
         return eCharsService.getDayActiveUserData();
     }
+
+    /**
+     * 日活、系统用户数、部门数、职位数量
+     */
+    @GetMapping("/three/data")
+    public List<Integer> getThreeData() {
+        return eCharsService.getThreeData();
+    }
 }

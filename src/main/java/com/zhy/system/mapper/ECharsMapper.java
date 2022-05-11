@@ -25,4 +25,9 @@ public interface ECharsMapper {
      */
     List<EChars> getDayActiveUserData();
 
+    /**
+     * 当日日活
+     */
+    Integer countTodayActiveUser();
+
 }

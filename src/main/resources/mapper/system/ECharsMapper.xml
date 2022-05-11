@@ -73,4 +73,11 @@
          where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(CURRENT_DATE())) * 1000 AND
                        unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL 1 DAY))) * 1000)) dau
     </select>
+
+    <select id="countTodayActiveUser" resultType="int">
+        select count(*)
+        from day_active_user as dau
+        where dau.creat_time BETWEEN unix_timestamp(TIMESTAMP(CURRENT_DATE())) * 1000 AND
+                      unix_timestamp(TIMESTAMP(date_add(CURRENT_DATE(), INTERVAL 1 DAY))) * 1000
+    </select>
 </mapper>
