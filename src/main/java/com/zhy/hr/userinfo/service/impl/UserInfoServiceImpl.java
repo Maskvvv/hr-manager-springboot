@@ -120,7 +120,6 @@ public class UserInfoServiceImpl implements IUserInfoService {
 
         // 发送邮件
         rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, RabbitMQConfig.SENDMAIL_CREAT_USERINFO_KEY, userInfo.getUserInfoId().toString());
-
         return flag;
     }
 
@@ -131,8 +130,11 @@ public class UserInfoServiceImpl implements IUserInfoService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateUserInfo(UserInfo userInfo) {
-        return userInfoMapper.updateUserInfo(userInfo);
+        int i = userInfoMapper.updateUserInfo(userInfo);
+        sysUserMapper.updateUser(userInfo.getSysUser());
+        return i;
     }
 
     /**

@@ -67,10 +67,12 @@ public class UserInfoReceiver {
             context.setVariable("bonus", userInfo.getSalary().getBonus());
             context.setVariable("lunchSalary", userInfo.getSalary().getLunchSalary());
             context.setVariable("trafficSalary", userInfo.getSalary().getTrafficSalary());
-            context.setVariable("beginDate", dateFormat.format(userInfo.getBeginDate()));
-            context.setVariable("yy", yy.format(userInfo.getBeginDate()));
-            context.setVariable("mm", mm.format(userInfo.getBeginDate()));
-            context.setVariable("dd", dd.format(userInfo.getBeginDate()));
+            if (userInfo.getBeginDate() != null) {
+                context.setVariable("beginDate", dateFormat.format(userInfo.getBeginDate()));
+                context.setVariable("yy", yy.format(userInfo.getBeginDate()));
+                context.setVariable("mm", mm.format(userInfo.getBeginDate()));
+                context.setVariable("dd", dd.format(userInfo.getBeginDate()));
+            }
 
             String mail = templateEngine.process("mail1", context);
             //log.info("邮件内容：" + mail);
