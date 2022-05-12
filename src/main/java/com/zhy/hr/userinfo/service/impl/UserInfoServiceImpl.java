@@ -1,4 +1,5 @@
 package com.zhy.hr.userinfo.service.impl;
+import com.zhy.common.constant.UserConstants;
 import com.zhy.framework.rabbitmq.config.RabbitMQConfig;
 import com.zhy.hr.userinfo.domain.PoliticsStatus;
 
@@ -29,6 +30,8 @@ import com.zhy.hr.userinfo.mapper.PoliticsStatusMapper;
 import com.zhy.hr.userinfo.mapper.SalaryMapper;
 import com.zhy.system.mapper.SysDeptMapper;
 import com.zhy.system.mapper.SysUserMapper;
+import com.zhy.system.service.ISysUserService;
+import com.zhy.system.service.impl.SysUserServiceImpl;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +56,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private ISysUserService sysUserService;
 
     @Autowired
     private SalaryMapper salaryMapper;
@@ -106,13 +112,13 @@ public class UserInfoServiceImpl implements IUserInfoService {
 
         // 创建账号
         SysUser sysUser = userInfo.getSysUser();
-        sysUser.setPassword(SecurityUtils.encryptPassword("123456"));
+        sysUser.setPassword(SecurityUtils.encryptPassword(UserConstants.DEFAULT_PASSWORD));
         sysUser.setNickName(userInfo.getUserInfoName());
         sysUser.setCreateBy(SecurityUtils.getUsername());
         sysUser.setCreateTime(new Date());
         sysUser.setUserName(generateUsername(userInfo));
         sysUser.setRoleIds(new Long[]{2L});
-        sysUserMapper.insertUser(sysUser);
+        sysUserService.insertUser(sysUser);
 
         // 创建用户信息
         userInfo.setUserId(sysUser.getUserId());

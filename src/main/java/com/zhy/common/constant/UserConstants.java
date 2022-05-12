@@ -108,4 +108,10 @@ public class UserConstants {
      */
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PASSWORD_MAX_LENGTH = 20;
+
+    /**
+     * 默认密码
+     */
+    public static final String DEFAULT_PASSWORD = "123456";
+
 }

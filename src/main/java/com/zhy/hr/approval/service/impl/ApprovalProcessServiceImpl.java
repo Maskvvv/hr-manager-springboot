@@ -54,7 +54,7 @@ public class ApprovalProcessServiceImpl implements IApprovalProcessService {
         // 获取审批人为自己的审批，管理员获取所有
         Long userId = SecurityUtils.getUserId();
         boolean isAdmin = SecurityUtils.isAdmin(userId);
-        approvalProcess.setApplyUserId(isAdmin ? null : userId);
+        approvalProcess.setApprovalUserId(isAdmin ? null : userId);
 
         return approvalProcessMapper.selectApprovalProcessList(approvalProcess);
     }
@@ -103,6 +103,10 @@ public class ApprovalProcessServiceImpl implements IApprovalProcessService {
         // 设置通过时间
         if (approvalProcess.getAprrovalState().equals(AprrovalState.successful.getValue())) {
             approvalProcess.setPassTime(new Date());
+        }
+
+        if ("1".equals(approvalProcess.getAprrovalState())) {
+            approvalProcess.setReasonFailure(null);
         }
 
         return approvalProcessMapper.updateApprovalProcess(approvalProcess);

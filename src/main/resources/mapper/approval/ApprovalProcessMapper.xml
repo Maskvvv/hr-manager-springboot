@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                ap.approval_remark,
                ap.apply_user_id,
                ap.aprroval_state,
-               ap.reason_failure,
+               ifnull(ap.reason_failure, '无') as reason_failure,
                ap.pass_time,
                ap.creat_time,
 
@@ -92,9 +92,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="approvalRemark != null">approval_remark = #{approvalRemark},</if>
             <if test="applyUserId != null">apply_user_id = #{applyUserId},</if>
             <if test="aprrovalState != null">aprroval_state = #{aprrovalState},</if>
-            <if test="reasonFailure != null">reason_failure = #{reasonFailure},</if>
             <if test="passTime != null">pass_time = #{passTime},</if>
             <if test="creatTime != null">creat_time = #{creatTime},</if>
+            reason_failure = #{reasonFailure},
         </trim>
         where approval_id = #{approvalId}
     </update>

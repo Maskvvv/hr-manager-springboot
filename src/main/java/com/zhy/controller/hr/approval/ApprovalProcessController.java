@@ -36,7 +36,7 @@ public class ApprovalProcessController extends BaseController {
     /**
      * 审批人查询审批申请列表
      */
-    @PreAuthorize("@ss.hasPermi('approval:apply:list')")
+    @PreAuthorize("@ss.hasPermi('approval:apply:query')")
     @GetMapping("/approval/list")
     public TableDataInfo approvalList(ApprovalProcess approvalProcess) {
         startPage();
@@ -47,7 +47,7 @@ public class ApprovalProcessController extends BaseController {
     /**
      * 查询审批申请列表
      */
-    @PreAuthorize("@ss.hasPermi('approval:apply:list')")
+    @PreAuthorize("@ss.hasPermi('approval:apply:query')")
     @GetMapping("/list")
     public TableDataInfo applyList(ApprovalProcess approvalProcess) {
         startPage();
